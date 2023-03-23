@@ -1,0 +1,27 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/config.2.0.schema.json",
+  "version": "2.0",
+  "bundles": {
+    "colab-normativos-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/colabEmissor/colabEmissorWebPart.js",
+          "manifest": "./src/webparts/colabEmissor/colabEmissorWebPart.manifest.json"
+        }
+      ]
+    },
+    "voto-normativos-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/elaboraVoto/VotoNormativosWebPart.js",
+          "manifest": "./src/webparts/elaboraVoto/VotoNormativosWebPart.manifest.json"
+        }
+      ]
+    }
+  },
+  "externals": {},
+  "localizedResources": {
+    "ColabNormativosWebPartStrings": "lib/webparts/elaboraVoto/loc/{locale}.js",
+    "VotoNormativosWebPartStrings": "lib/webparts/elaboraVoto/loc/{locale}.js"
+  }
+}

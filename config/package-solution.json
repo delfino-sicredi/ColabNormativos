@@ -1,0 +1,40 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
+  "solution": {
+    "name": "colab-normativos-client-side-solution",
+    "id": "6f9bc37f-b1b0-4f45-a197-4a855af95aa9",
+    "version": "1.0.0.0",
+    "includeClientSideAssets": true,
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "developer": {
+      "name": "",
+      "websiteUrl": "",
+      "privacyUrl": "",
+      "termsOfUseUrl": "",
+      "mpnId": "Undefined-1.16.1"
+    },
+    "metadata": {
+      "shortDescription": {
+        "default": "colab-normativos description"
+      },
+      "longDescription": {
+        "default": "colab-normativos description"
+      },
+      "screenshotPaths": [],
+      "videoUrl": "",
+      "categories": []
+    },
+    "features": [
+      {
+        "title": "colab-normativos Feature",
+        "description": "The feature that activates elements of the colab-normativos solution.",
+        "id": "b3628d3b-90c8-4d26-8c03-0403a52e7849",
+        "version": "1.0.0.0"
+      }
+    ]
+  },
+  "paths": {
+    "zippedPackage": "solution/colab-normativos.sppkg"
+  }
+}
