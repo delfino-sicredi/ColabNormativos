@@ -6,25 +6,112 @@ hide circle
 ' avoid problems with angled crows feet
 skinparam linetype ortho
 
-entity "Entity01" as e01 {
-  *e1_id : number <<generated>>
+entity "Normativos" as e01 {
+Título : Texto com uma linha
   --
-  *name : text
-  description : text
+Abrangência : Metadados Gerenciados
+AbrangenciaLocal : Opção
+Área : Texto com uma linha
+Assunto : Metadados Gerenciados
+Autor : Pessoa ou Grupo
+Central : Metadados Gerenciados
+Classificação da Informação : Metadados Gerenciados
+Código : Texto com uma linha
+ControleInternoAD : Texto com uma linha
+ControleInternoSP : Pessoa ou Grupo
+Cooperativa : Metadados Gerenciados
+Criado : Data e Hora
+Data de Publicação : Data e Hora
+Descrição : Texto com várias linhas
+Empresa : Metadados Gerenciados
+Etapa : Opção
+FusionID : Número
+Ingresso : Data e Hora
+MicroEtapa : Opção
+Modificado : Data e Hora
+Origem : Metadados Gerenciados
+Relacionados : Consulta
+Responsável : Pessoa ou Grupo
+Revisão : Data e Hora
+Revisor Circunstancial : Pessoa ou Grupo
+Substitui ou Revoga : Consulta
+Substituído ou Revogado Por : Consulta
+Tipo : Metadados Gerenciados
+Título : Texto com uma linha
+Versão : Número
+Criado por : Pessoa ou Grupo
+Modificado por : Pessoa ou Grupo
+Com Check-out para : Pessoa ou Grupo
+
 }
 
-entity "Entity02" as e02 {
-  *e2_id : number <<generated>>
+entity "Tarefas" as e02 {
+  *Normativo Relacionado : Consulta
   --
-  *e1_id : number <<FK>>
-  other_details : text
+Abrangência : Texto com uma linha
+Abrangência Local : Opção
+Ao : Pessoa ou Grupo
+Atribuída a : Consulta
+Central : Texto com uma linha
+Código da Central : Texto com uma linha
+Código da Cooperativa : Texto com várias linhas
+Comentários : Pessoa ou Grupo
+Compliance : Pessoa ou Grupo
+Controles Internos : Pessoa ou Grupo
+Controles Internos da Central : Consulta
+Cooperativa : Data e Hora
+Criado : Data e Hora
+Data de Conclusão : Data e Hora
+Data de Início : Data e Hora
+Data de Publicação : Data e Hora
+Data de Vencimento : Texto com várias linhas
+Descrição : Pessoa ou Grupo
+Diretor da Área Emissora : Pessoa ou Grupo
+Diretor de Operações : Pessoa ou Grupo
+Diretor de Supervisão : Sim/Não
+Disponibilizar Resultado : Pessoa ou Grupo
+Grupo Avaliador : Itens Relacionados
+Itens Relacionados : Pessoa ou Grupo
+Jurídico : Pessoa ou Grupo
+Jurídico da Central : Data e Hora
+Modificado : Texto com várias linhas
+MotivoDisponibilizarResultado : Texto com uma linha
+Nome da tarefa : Consulta
+Normativo Relacionado : Data e Hora
+Prazo do Registro Local de Cooperativas : Consulta
+Predecessoras : Opção
+Prioridade : Texto com uma linha
+PublicoAlvo : Sim/Não
+Registro Local de Cooperativas : Pessoa ou Grupo
+Revisores Adicionais : Pessoa ou Grupo
+Risco Operacional : Opção
+Status da Tarefa : Opção
+StatusSaved : Texto com uma linha
+Tipo do Normativo : Número
+Versão : Pessoa ou Grupo
+Criado por : Pessoa ou Grupo
+
 }
 
-entity "Entity03" as e03 {
-  *e3_id : number <<generated>>
+entity "Colaboração Normativos" as e03 {
+  NormativoRelacionado : Consulta
   --
-  e1_id : number <<FK>>
-  other_details : text
+Aceita : Sim/Não
+CentralLookup : Consulta
+Colaborador : Pessoa ou Grupo
+Comentários : Texto com várias linhas
+CooperativaLookup : Consulta
+Criado : Data e Hora
+Curtidas : Número
+DataResposta : Data e Hora
+Modificado : Data e Hora
+NormativoRelacionado : Consulta
+Resposta : Texto com várias linhas
+Revisor : Pessoa ou Grupo
+Título : Texto com uma linha
+Criado por : Pessoa ou Grupo
+Modificado por : Pessoa ou Grupo
+
 }
 
 e01 ||..o{ e02

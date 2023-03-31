@@ -10,6 +10,14 @@
         }
       ]
     },
+    "colab-cooperativas-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/colabCooperativas/ColabCooperativasWebPart.js",
+          "manifest": "./src/webparts/colabCooperativas/ColabCooperativasWebPart.manifest.json"
+        }
+      ]
+    },
     "voto-normativos-web-part": {
       "components": [
         {
@@ -22,6 +30,7 @@
   "externals": {},
   "localizedResources": {
     "ColabNormativosWebPartStrings": "lib/webparts/elaboraVoto/loc/{locale}.js",
-    "VotoNormativosWebPartStrings": "lib/webparts/elaboraVoto/loc/{locale}.js"
+    "VotoNormativosWebPartStrings": "lib/webparts/elaboraVoto/loc/{locale}.js",
+    "ColabCooperativasWebPartStrings": "lib/webparts/elaboraVoto/loc/{locale}.js"
   }
 }

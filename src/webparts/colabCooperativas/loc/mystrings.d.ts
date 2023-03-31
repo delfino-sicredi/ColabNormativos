@@ -1,4 +1,4 @@
-declare interface IColabGeralNormativosWebPartStrings {
+declare interface IColabCooperativasWebPartStrings {
   PropertyPaneDescription: string;
   BasicGroupName: string;
   DescriptionFieldLabel: string;
@@ -12,7 +12,7 @@ declare interface IColabGeralNormativosWebPartStrings {
   AppOutlookEnvironment: string;
 }
 
-declare module 'ColabGeralNormativosWebPartStrings' {
-  const strings: IColabGeralNormativosWebPartStrings;
+declare module 'ColabCooperativasWebPartStrings' {
+  const strings: IColabCooperativasWebPartStrings;
   export = strings;
 }

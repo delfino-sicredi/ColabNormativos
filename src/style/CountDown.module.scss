@@ -1,0 +1,41 @@
+.counter {
+  display: flex;
+  gap: 0.3rem;
+
+  .counter-item {
+    width: 70px;
+    height: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 0.25rem;
+    background: #d7e6c8;
+
+    span.label {
+      font-size: 0.7rem;
+      color: #5a645a;
+      width: 100%;
+      text-transform: uppercase;
+      font-weight: 700;
+      text-align: center;
+      margin-top: 0.1rem;
+      background: var(--white);
+    }
+
+    span.value {
+      width: 100%;
+      padding: 0 0.5rem;
+      font-weight: 700;
+      font-size: 1rem;
+      color: #5a645a;
+      text-align: center;
+    }
+
+    @media (max-width: 500px) {
+      span.value {
+        font-size: 2.5rem;
+      }
+    }
+  }
+}

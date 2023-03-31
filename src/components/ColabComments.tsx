@@ -9,59 +9,19 @@ import "@pnp/sp/attachments";
 import "@pnp/sp/files";
 import "@pnp/sp/folders";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faReply, faThumbsUp } from '@fortawesome/free-solid-svg-icons';
+import { faReply, faThumbsUp, faPaperclip, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import ReadMore from 'read-more-less-react';
-import { IColabCommentsProps } from './IColabProps';
+import { IColabCommentsProps, IColabCoop } from './IColabProps';
 import * as Modal from 'react-modal';
-
-interface IComments {
-    Aceita: String;
-    CentralLookup: {
-        Title: String;
-    }
-    CooperativaLookup: {
-        Title: String;
-    }
-    Colaborador: {
-        EMail: String;
-    }
-    Revisorcas: {
-        EMail: String;
-        Title: String;
-    }
-    Curtidas: string;
-    NormativoRelacionado: {
-        Title: String;
-    }
-    Author: {
-        Title: String;
-        Email: String;
-    }
-    NormativoRelacionadoId: String;
-    Resposta: String;
-    Title: String;
-    OData__Comments: String;
-    Created: string;
-    ID: string;
-}
-
-const customStyles = {
-    content: {
-        top: '50%',
-        left: '50%',
-        right: 'auto',
-        bottom: 'auto',
-        marginRight: '-50%',
-        transform: 'translate(-50%, -50%)',
-        width: '70%',
-        color: 'black',
-    },
-};
+import { answerStyles, FormatDate } from '../utils/Functions';
+import Upload from './FileUpload';
 
 
 export default function ColabNormativos(props: IColabCommentsProps): JSX.Element {
-    const [comments, setComments] = useState<IComments[]>([]);
+    const [comments, setComments] = useState<IColabCoop[]>([]);
     const [modalIsOpen, setIsOpen] = React.useState(false);
+    const [modalEdit, setEdit] = React.useState(false);
+    const [endColab, setEndColab] = React.useState(false);
     const [like, setLike] = React.useState(false);
     const [idItem, setIdComment] = React.useState(0);
     const [countLike, setCountLike] = React.useState(0);
@@ -74,17 +34,17 @@ export default function ColabNormativos(props: IColabCommentsProps): JSX.Element
         setIsOpen(false);
     }
 
-    function formatDate(date: string) {
-        const fullDate = new Date(date)
-        const day = fullDate.getDate().toString().padStart(2, '0');
-        const month = (fullDate.getMonth() + 1).toString().padStart(2, '0');
-        const year = fullDate.getFullYear();
-        return `${day}/${month}/${year}`;
+    function openModalEdit() {
+        setEdit(true);
+    }
+
+    function closeModalEdit() {
+        setEdit(false);
     }
 
     function answerComment(idComment: number) {
         (async () => {
-            let item = sp.web.lists.getByTitle("Contribuicoes").items.getById(idComment);
+            let item = sp.web.lists.getByTitle("ColaboracaoCooperativas").items.getById(idComment);
             const i = await item.update({
                 Resposta: 'Teste Apenas'
             });
@@ -101,31 +61,6 @@ export default function ColabNormativos(props: IColabCommentsProps): JSX.Element
                 setCountLike(data.length);
             });
     }
-
-    // function likeComment(idComment: number) {
-    //     (async () => {
-    //         if (idComment != idItem) {
-    //             let list = sp.web.lists.getByTitle("ContribuicoesGostei");
-    //             //const items = await list.items.expand('Contribuicao').filter('Contribuicao/Id eq 1').select('*,Contribuicao/Title');
-    //             const iar = await list.items.add({
-    //                 Title: "Foi",
-    //                 ContribuicaoId: idComment//#Primeira Colaboração`
-    //             });
-    //             setLike(true);
-    //             setIdComment(idComment);
-    //             countLikeById();
-    //             console.log(countLike);
-    //             console.log(iar);
-    //         }
-    //         else {
-    //             setLike(false);
-    //             setIdComment(0);
-    //         }
-    //         //this.setState({showmessageBar:true,message:"Item Added Sucessfully",itemID:iar.data.Id});
-    //     })().catch(console.log);
-
-    //     //this.setState({ showmessageBar: true, message: "Item updated sucessfully" }); 
-    // }
 
     function managerLikes(idComment: number) {
         (async () => {
@@ -162,11 +97,11 @@ export default function ColabNormativos(props: IColabCommentsProps): JSX.Element
                 baseUrl: webUrl
             },
         });
-
-        sp.web.lists.getByTitle('Contribuicoes').items.expand('Author,NormativoRelacionado,CentralLookup,CooperativaLookup,Colaborador,Revisorcas')
-            .select('*,Created,Author/Title,Author/EMail,Colaborador/EMail,Revisorcas/EMail,Revisorcas/Title,NormativoRelacionado/Title,CooperativaLookup/Title,CentralLookup/Title')
-            .filter("NormativoRelacionado/Id eq '3543'")()
-            .then((data: IComments[]) => {
+        setEndColab(true);
+        sp.web.lists.getByTitle('ColaboracaoCooperativas').items.expand('Author,NormativoRelacionado,Revisor')
+            .select('*,Created,Author/Title,Author/EMail,Revisor/EMail,Revisor/Title,NormativoRelacionado/Title')
+            .filter("NormativoRelacionado/Id eq '3324'")()
+            .then((data: IColabCoop[]) => {
                 setComments(data)
                 console.log(data);
             });
@@ -181,19 +116,26 @@ export default function ColabNormativos(props: IColabCommentsProps): JSX.Element
 
             {comments.map((comment, idx) => {
                 return (
+
                     <div className="row border-bottom" style={{ paddingTop: '0.8rem', paddingBottom: '0.8rem' }}>
-                        <div className="d-flex flex-start">
+                        <div className="col-md-12 d-flex flex-start">
+                            <div style={endColab === true ? { display: 'block' } : { display: 'none' }}>
+                                <div style={{ paddingTop: '7rem' }}>
+                                    <input className="form-check-input" type="checkbox" id="checkboxNoLabel" value="" aria-label="..." />
+                                </div>
+                            </div>
                             <img className="rounded-circle shadow-1-strong me-3"
                                 src={`/_layouts/15/userphoto.aspx?size=L&username=${comment.Author.Email}`} alt="avatar" width="60"
                                 height="60" />
                             <div>
                                 <h6 className="fw-bold">{comment.Author.Title}</h6>
                                 <div className="d-flex align-items-center mb-3">
-                                    <span className="badge bg-success" style={{ marginRight: '0.8rem' }}>{formatDate(comment.Created)}</span>
-                                    <span className="badge bg-success">{comment.CentralLookup.Title}</span>
+                                    <span className="badge bg-success" style={{ marginRight: '0.8rem' }}>{FormatDate(comment.Created)}</span>
+                                    <span className="badge bg-success">{comment.Central}</span>
+                                    <span><FontAwesomeIcon icon={faPaperclip} className='me-2' color='#3FA110' /> Arquivo 1</span>
                                 </div>
                                 <p>
-                                    <ReadMore text={comment.OData__Comments} lines={2} readMoreText="Ver mais" readLessText="Ver Menos" />
+                                    <ReadMore text={comment.Colaboracao} lines={2} readMoreText="Ver mais" readLessText="Ver Menos" />
                                 </p>
                                 <p>
                                     <button className={like && comment.ID == idItem.toString() ? "btn btn-liked" : "btn btn-success"} style={{ marginRight: '0.8rem', paddingLeft: '0.125rem' }} onClick={() => managerLikes(1)}>
@@ -202,21 +144,28 @@ export default function ColabNormativos(props: IColabCommentsProps): JSX.Element
                                         Gostei
                                     </button>
                                     {comment.Resposta?.length > 2 ? ''
-                                        : (<button onClick={openModal} className="btn btn-success">
+                                        : (<button onClick={openModal} className="btn btn-success" style={{ marginRight: '0.8rem' }}>
                                             <FontAwesomeIcon icon={faReply} className='me-2' color='white' />
                                             Responder
                                         </button>)}
+
+                                    <Upload idColab='1'></Upload>
+
+                                    <button onClick={openModalEdit} className="btn btn-success" style={{ marginLeft: '0.8rem' }}>
+                                        <FontAwesomeIcon icon={faPenToSquare} className='me-2' color='white' />
+                                        Editar
+                                    </button>
                                 </p>
                                 {comment.Resposta?.length > 2 ?
                                     (<p className="mb-1 answer">
                                         <div className="d-flex flex-start">
                                             <img className="rounded-circle shadow-1-strong me-3"
-                                                src={`/_layouts/15/userphoto.aspx?size=L&username=${comment.Revisorcas.EMail}`} alt="avatar" width="60"
+                                                src={`/_layouts/15/userphoto.aspx?size=L&username=${comment.Revisor.EMail}`} alt="avatar" width="60"
                                                 height="60" />
                                             <div>
-                                                <h6 className="fw-bold mb-1">{comment.Revisorcas.Title}</h6>
+                                                <h6 className="fw-bold mb-1">{comment.Revisor.Title}</h6>
                                                 <div className="d-flex align-items-center mb-3">
-                                                    <span className="badge bg-success" style={{ marginRight: '10px' }}>{formatDate(comment.Created)}</span>
+                                                    <span className="badge bg-success" style={{ marginRight: '10px' }}>{FormatDate(comment.Created)}</span>
                                                     <span className="badge bg-success">Emissor</span>
                                                 </div>
                                                 <p>
@@ -237,16 +186,16 @@ export default function ColabNormativos(props: IColabCommentsProps): JSX.Element
             <Modal
                 isOpen={modalIsOpen}
                 onRequestClose={closeModal}
-                style={customStyles}        >
+                style={answerStyles} >
                 <h4 className="mb-0">Colaboração</h4>
                 <br></br>
                 <form>
                     <div className="container">
-                        <div className="row">
-                            <div className="col-md-12 mb-4 mb-md-0">
+                        <div className="row mb-4">
+                            <div className="col-md-12">
                                 <div className="select-wrapper">
                                     <div className="form-outline">
-                                        <textarea name="message" rows={10} cols={20} className="form-control select-input active" id='answer'/>
+                                        <textarea name="answer" rows={10} cols={20} className="form-control select-input active" id='answer' />
                                         <label className="form-label select-label active">Resposta</label>
                                         <div className="form-notch">
                                             <div className="form-notch-leading" style={{ width: "9px" }}></div>
@@ -267,6 +216,61 @@ export default function ColabNormativos(props: IColabCommentsProps): JSX.Element
                     </div>
                 </form>
             </Modal>
+
+
+            <Modal
+                isOpen={modalEdit}
+                onRequestClose={closeModalEdit}
+                style={answerStyles} >
+                <h4 className="mb-0">Colaboração</h4>
+                <br></br>
+                <form>
+                    <div className="container">
+                    <div className="row mb-4">
+                            <div className="col-md-12">
+                                <div className="select-wrapper">
+                                    <div className="form-outline">
+                                        <input type="text" name="title" className="form-control select-input active" id='title' />
+                                        <label className="form-label select-label active">Título</label>
+                                        <div className="form-notch">
+                                            <div className="form-notch-leading" style={{ width: "9px" }}></div>
+                                            <div className="form-notch-middle" style={{ width: "39.6px" }}></div>
+                                            <div className="form-notch-trailing">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col-md-12">
+                                <div className="select-wrapper">
+                                    <div className="form-outline">
+                                        <textarea name="answer" rows={10} cols={20} className="form-control select-input active" id='answer' />
+                                        <label className="form-label select-label active">Colaboração</label>
+                                        <div className="form-notch">
+                                            <div className="form-notch-leading" style={{ width: "9px" }}></div>
+                                            <div className="form-notch-middle" style={{ width: "81.6px" }}></div>
+                                            <div className="form-notch-trailing">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col-md-12 modal-btn">
+                                <button onClick={closeModalEdit} className='btn btn-danger' style={{ marginRight: '10px' }}>Cancelar</button>
+                                <button className='btn btn-success' >Salvar</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </Modal>
+
+
+
+
         </>
     );
 }
