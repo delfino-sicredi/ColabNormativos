@@ -1,7 +1,7 @@
 import * as React from 'react';
 // import styles from './TarefaCentrais.module.scss';
 import { ITarefaCentraisProps } from './ITarefaCentraisProps';
-import Header from "../../colabEmissor/components/ColabHeader";
+import Header from '../../../components/ColabHeader';
 import { sp } from "@pnp/sp/presets/all";
 import "@pnp/sp/lists";
 import "@pnp/sp/items";

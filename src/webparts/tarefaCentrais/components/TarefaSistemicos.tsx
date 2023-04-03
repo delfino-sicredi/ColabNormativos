@@ -57,7 +57,7 @@ export default function TarefaSitemicos(props: ITarefaSistemicorProps): JSX.Elem
                             return (
                                 <>
                                     <tr>
-                                        <td><input type="checkbox"></input></td>
+                                        <td><input type="checkbox" className="form-check-input"></input></td>
                                         <td>{central.CodigoCentral}</td>
                                         <td>{central.Title}</td>
                                     </tr>
