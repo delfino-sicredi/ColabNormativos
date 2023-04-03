@@ -25,12 +25,21 @@
           "manifest": "./src/webparts/elaboraVoto/VotoNormativosWebPart.manifest.json"
         }
       ]
+    },
+    "tarefa-centrais-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/tarefaCentrais/TarefaCentraisWebPart.js",
+          "manifest": "./src/webparts/tarefaCentrais/TarefaCentraisWebPart.manifest.json"
+        }
+      ]
     }
   },
   "externals": {},
   "localizedResources": {
     "ColabNormativosWebPartStrings": "lib/webparts/elaboraVoto/loc/{locale}.js",
     "VotoNormativosWebPartStrings": "lib/webparts/elaboraVoto/loc/{locale}.js",
-    "ColabCooperativasWebPartStrings": "lib/webparts/elaboraVoto/loc/{locale}.js"
+    "ColabCooperativasWebPartStrings": "lib/webparts/elaboraVoto/loc/{locale}.js",
+    "TarefaCentraisWebPartStrings": "lib/webparts/tarefaCentrais/loc/{locale}.js"
   }
 }
