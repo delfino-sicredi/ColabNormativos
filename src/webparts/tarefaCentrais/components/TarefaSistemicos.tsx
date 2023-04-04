@@ -9,6 +9,7 @@ import "@pnp/sp/attachments";
 import "@pnp/sp/files";
 import "@pnp/sp/folders";
 import { ITarefaSistemicorProps } from './ITarefaSistemicos.Props';
+import customStyle from '../../../style/colab.module.scss';
 
 export interface ICentraisProps {
     Title: string;
@@ -77,7 +78,7 @@ export default function TarefaSitemicos(props: ITarefaSistemicorProps): JSX.Elem
             </div>
             <div style={{ marginTop: 40 }}>
                 <div className='col'>
-                    <button className='btn btn-success' onClick={SalvarTarefa}>Enviar Tarefa</button>
+                    <button className={`${customStyle['btn']} ${customStyle['btn-success']}`} style={{ marginRight: '0.8rem' }} onClick={SalvarTarefa}>ENVIAR TAREFA</button>
                 </div>
             </div>
 
