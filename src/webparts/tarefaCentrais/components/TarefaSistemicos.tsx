@@ -35,6 +35,8 @@ export default function TarefaSitemicos(props: ITarefaSistemicorProps): JSX.Elem
                 setCentrais(data)
                 console.log(data);
             });
+
+            SelectAll();
     }, []);
     return (
         <>
@@ -47,7 +49,7 @@ export default function TarefaSitemicos(props: ITarefaSistemicorProps): JSX.Elem
                 <table className="table table-group-divide">
                     <thead className="table-light">
                         <tr>
-                            <th><input type="checkbox"></input></th>
+                            <th><input type="checkbox" className="form-check-input" id='selected-all' ></input></th>
                             <th>Código</th>
                             <th>Nome</th>
                         </tr>
@@ -57,7 +59,7 @@ export default function TarefaSitemicos(props: ITarefaSistemicorProps): JSX.Elem
                             return (
                                 <>
                                     <tr>
-                                        <td><input type="checkbox" className="form-check-input"></input></td>
+                                        <td><input type="checkbox" className="selected-item form-check-input" value={central.CodigoCentral}></input></td>
                                         <td>{central.CodigoCentral}</td>
                                         <td>{central.Title}</td>
                                     </tr>
@@ -75,10 +77,54 @@ export default function TarefaSitemicos(props: ITarefaSistemicorProps): JSX.Elem
             </div>
             <div style={{ marginTop: 40 }}>
                 <div className='col'>
-                    <button className='btn btn-success'>Enviar Tarefa</button>
+                    <button className='btn btn-success' onClick={SalvarTarefa}>Enviar Tarefa</button>
                 </div>
             </div>
 
         </>
     );
+}
+
+
+function SelectAll(){
+
+    const selectAllCheckBox = document.getElementById("selected-all") as HTMLInputElement;
+
+    selectAllCheckBox.addEventListener('click', function(){
+        console.log("entrei aqui");
+        const selectItemCheckBox = document.querySelectorAll(".selected-item") as NodeListOf<HTMLInputElement>;      
+
+        for(let i=0; i < selectItemCheckBox.length; i++){
+            selectItemCheckBox[i].checked = this.checked;
+        }
+    });
+
+    const selectItemCheckBox = document.querySelectorAll(".select-item");
+    for (let i = 0; i < selectItemCheckBox.length; i++) {
+        selectItemCheckBox[i].addEventListener("click", function() {
+      if (!this.checked) {
+        selectAllCheckBox.checked = false;
+      } else {
+        const checkedCount = document.querySelectorAll(".select-item:checked").length;
+        console.log(checkedCount);
+        selectAllCheckBox.checked = checkedCount === selectItemCheckBox.length;
+      }
+    });
+}
+
+}
+
+function SalvarTarefa(){
+
+    // const getSelectedItemsButton = document.getElementById("get-selected-items");
+    // getSelectedItemsButton.addEventListener("click", function() {
+    const selectedItems = [];
+    const selectedCheckboxes = document.querySelectorAll(".selected-item:checked") as NodeListOf<HTMLInputElement>;
+    for (let i = 0; i < selectedCheckboxes.length; i++) {
+      selectedItems.push(selectedCheckboxes[i].value);
+    }
+    const selectedItemsString = selectedItems.join(", ");
+    alert("Itens selecionados: " + selectedItemsString);
+//   });
+
 }
