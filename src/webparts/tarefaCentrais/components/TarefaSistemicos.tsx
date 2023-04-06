@@ -12,21 +12,29 @@ import { ITarefaSistemicorProps } from './ITarefaSistemicos.Props';
 import customStyle from '../../../style/colab.module.scss';
 import { PeoplePicker, PrincipalType } from "@pnp/spfx-controls-react/lib/PeoplePicker";
 import {InsertTarefaCentrais, SelectAll} from '../../../utils/Functions';
-import { IPersonaProps } from "office-ui-fabric-react/lib/components/Persona/Persona.types";
+//import { IPersonaProps } from "office-ui-fabric-react/lib/components/Persona/Persona.types";
 import {  UrlQueryParameterCollection } from '@microsoft/sp-core-library';
 
 export interface ICentraisProps {
     Title: string;
     CodigoCentral: string
 }
+export interface IPeopleProps {
+    id: string;
+}
 
 export default function TarefaSitemicos(props: ITarefaSistemicorProps): JSX.Element {
     const [centrais, setCentrais] = useState<ICentraisProps[]>([]);
-    const [revisoresObrigatorios, setObrigatorios] = useState<IPersonaProps[]>([]); 
+    //const [revisoresObrigatorios, setObrigatorios] = useState<any[]>([]); 
         
 
-    const onPeoplePickerChange = (items: IPersonaProps[]) =>{
-        setObrigatorios(items);
+    let allPeople: any = [];
+
+    const onPeoplePickerChange = (items: any[]) =>{
+        alert("entrei aqui saco");
+        allPeople.push(items);
+        //setObrigatorios(items);   
+        console.log(allPeople);
     }
     useEffect(() => {
         const webUrl = window.location.protocol + "//" + window.location.hostname + "/" + window.location.pathname.split('/')[1] + "/" + window.location.pathname.split('/')[2]
@@ -42,6 +50,7 @@ export default function TarefaSitemicos(props: ITarefaSistemicorProps): JSX.Elem
         const queryParameters = new UrlQueryParameterCollection(window.location.href);
         const id: number = parseInt(queryParameters.getValue("tarefa"));
         console.log("Id Tarefa", id);
+        
         SelectAll();
 
         sp.web.lists.getByTitle('Centrais').items.select('*,Title,CodigoCentral')()
@@ -52,7 +61,7 @@ export default function TarefaSitemicos(props: ITarefaSistemicorProps): JSX.Elem
 
     }, []);
 
-    const clickHandler = (revisoresObrigatorios: IPersonaProps[]) => {
+    const clickHandler = (allPeople: any[]) => {
         return (event: React.MouseEvent) => {
             const selectedItems = [];
             const selectedCheckboxes = document.querySelectorAll(".selected-item:checked") as NodeListOf<HTMLInputElement>;
@@ -63,7 +72,7 @@ export default function TarefaSitemicos(props: ITarefaSistemicorProps): JSX.Elem
             const selectedItemsString = selectedItems.join(", ");
             // alert("Itens selecionados: " + selectedItemsString +" Data participação:"+ FormatDate(dataParticipacao));
 
-            InsertTarefaCentrais(sp,selectedItemsString, 3543, dataParticipacao);
+            InsertTarefaCentrais(sp,selectedItemsString, 3543, dataParticipacao, allPeople);
             
           event.preventDefault();
         }
@@ -109,8 +118,7 @@ export default function TarefaSitemicos(props: ITarefaSistemicorProps): JSX.Elem
                     PrincipalType.User,
                     PrincipalType.SecurityGroup,
                     PrincipalType.DistributionList
-                    ]}
-                    resolveDelay={1000}/>
+                    ]}/>
             </div>
             <div>
             <h6>Revisores Circunstanciais:</h6>               
@@ -131,7 +139,7 @@ export default function TarefaSitemicos(props: ITarefaSistemicorProps): JSX.Elem
             </div>
             <div style={{ marginTop: 40 }}>
                 <div className='col'>
-                    <button className={`${customStyle['btn']} ${customStyle['btn-success']}`} style={{ marginRight: '0.8rem' }} onClick={clickHandler(revisoresObrigatorios)}>ENVIAR TAREFA</button>
+                    <button className={`${customStyle['btn']} ${customStyle['btn-success']}`} style={{ marginRight: '0.8rem' }} onClick={clickHandler(allPeople)}>ENVIAR TAREFA</button>
                 </div>
             </div>
 

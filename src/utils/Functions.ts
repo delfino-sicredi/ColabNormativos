@@ -1,4 +1,5 @@
 import { SPRest } from "@pnp/sp";
+//import { IPeopleProps } from '../components/IColabProps';
 
 export const answerStyles = {
     content: {
@@ -75,18 +76,19 @@ export function GetTermValue(id: String, normativo: any) {
     return null;
 }
 
-export async function InsertTarefaCentrais(sp: SPRest, Centrais: string , NormativoRelacionadoId: any, PrazoCentrais: string){
+export async function InsertTarefaCentrais(sp: SPRest, Centrais: string, NormativoRelacionadoId: any, PrazoCentrais: string, RevisoresObrigatorios: any[]) {
 
-        try {  
-          await sp.web.lists.getByTitle('GerenciamentoColaboracoes').items.add({  
+    try {
+        await sp.web.lists.getByTitle('GerenciamentoColaboracoes').items.add({
             Centrais: Centrais,
             NormativoRelacionadoId: NormativoRelacionadoId,
-            PrazoCentrais: PrazoCentrais
-          });  
-        }  
-        catch (error) {  
-            console.log(error);
-        }
+            PrazoCentrais: PrazoCentrais,
+            Revisor_x0020_Circunstancial: {users: RevisoresObrigatorios}   //[{ Key: RevisoresObrigatorios[0].id}] //   
+        });
+    }
+    catch (error) {
+        console.log(error);
+    }
 }
 
 export function SelectAll() {

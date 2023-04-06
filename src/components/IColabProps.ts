@@ -14,6 +14,9 @@ export interface IFileUploadProps {
   idColab: string
 }
 
+export interface IPeopleProps {
+  id: string;
+}
 
 export interface IComments {
   Aceita: String;
