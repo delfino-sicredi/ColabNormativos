@@ -13,6 +13,7 @@ import customStyle from '../../../style/colab.module.scss';
 import { PeoplePicker, PrincipalType } from "@pnp/spfx-controls-react/lib/PeoplePicker";
 import {InsertTarefaCentrais, SelectAll} from '../../../utils/Functions';
 import { IPersonaProps } from "office-ui-fabric-react/lib/components/Persona/Persona.types";
+import {  UrlQueryParameterCollection } from '@microsoft/sp-core-library';
 
 export interface ICentraisProps {
     Title: string;
@@ -21,13 +22,12 @@ export interface ICentraisProps {
 
 export default function TarefaSitemicos(props: ITarefaSistemicorProps): JSX.Element {
     const [centrais, setCentrais] = useState<ICentraisProps[]>([]);
-    const [revisoresObrigatorios, setObrigatorios] = useState<IPersonaProps[]>([]);
+    const [revisoresObrigatorios, setObrigatorios] = useState<IPersonaProps[]>([]); 
+        
 
     const onPeoplePickerChange = (items: IPersonaProps[]) =>{
-
         setObrigatorios(items);
     }
-
     useEffect(() => {
         const webUrl = window.location.protocol + "//" + window.location.hostname + "/" + window.location.pathname.split('/')[1] + "/" + window.location.pathname.split('/')[2]
         sp.setup({
@@ -39,6 +39,9 @@ export default function TarefaSitemicos(props: ITarefaSistemicorProps): JSX.Elem
             },
         });
 
+        const queryParameters = new UrlQueryParameterCollection(window.location.href);
+        const id: number = parseInt(queryParameters.getValue("tarefa"));
+        console.log("Id Tarefa", id);
         SelectAll();
 
         sp.web.lists.getByTitle('Centrais').items.select('*,Title,CodigoCentral')()
