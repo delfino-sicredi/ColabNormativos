@@ -22,7 +22,7 @@ export default class TarefaCentrais extends React.Component<ITarefaCentraisProps
         <div className={`${customStyle['bg-white']} ${customStyle['border']} ${customStyle['rounded-5']}`}>
           <div className={customStyle.container} style={{ paddingBottom: '50px' }}>
             <Header idNormativo='3543' />  
-            <TarefaSistemicos idNormativo='3543'></TarefaSistemicos>
+            <TarefaSistemicos idNormativo='3543' context={this.props.context1}></TarefaSistemicos>
           </div>
         </div>
       </section>

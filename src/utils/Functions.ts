@@ -1,6 +1,6 @@
 import { SPRest } from "@pnp/sp";
 
-export const answerStyles  = {
+export const answerStyles = {
     content: {
         top: '50%',
         left: '50%',
@@ -73,4 +73,45 @@ export function GetTermValue(id: String, normativo: any) {
         if (normativo.TaxCatchAll.results[i].ID === id)
             return normativo.TaxCatchAll.results[i].Term;
     return null;
+}
+
+export async function InsertTarefaCentrais(sp: SPRest, Centrais: string , NormativoRelacionadoId: any, PrazoCentrais: string){
+
+        try {  
+          await sp.web.lists.getByTitle('GerenciamentoColaboracoes').items.add({  
+            Centrais: Centrais,
+            NormativoRelacionadoId: NormativoRelacionadoId,
+            PrazoCentrais: PrazoCentrais
+          });  
+        }  
+        catch (error) {  
+            console.log(error);
+        }
+}
+
+export function SelectAll() {
+
+    const selectAllCheckBox = document.getElementById("selected-all") as HTMLInputElement;
+
+    selectAllCheckBox.addEventListener('click', function () {
+        console.log("entrei aqui");
+        const selectItemCheckBox = document.querySelectorAll(".selected-item") as NodeListOf<HTMLInputElement>;
+
+        for (let i = 0; i < selectItemCheckBox.length; i++) {
+            selectItemCheckBox[i].checked = this.checked;
+        }
+    });
+
+    const selectItemCheckBox = document.querySelectorAll(".select-item");
+    for (let i = 0; i < selectItemCheckBox.length; i++) {
+        selectItemCheckBox[i].addEventListener("click", function () {
+            if (!this.checked) {
+                selectAllCheckBox.checked = false;
+            } else {
+                const checkedCount = document.querySelectorAll(".select-item:checked").length;
+                console.log(checkedCount);
+                selectAllCheckBox.checked = checkedCount === selectItemCheckBox.length;
+            }
+        });
+    }
 }

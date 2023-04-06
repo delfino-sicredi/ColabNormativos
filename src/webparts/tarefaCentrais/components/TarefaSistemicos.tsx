@@ -10,6 +10,9 @@ import "@pnp/sp/files";
 import "@pnp/sp/folders";
 import { ITarefaSistemicorProps } from './ITarefaSistemicos.Props';
 import customStyle from '../../../style/colab.module.scss';
+import { PeoplePicker, PrincipalType } from "@pnp/spfx-controls-react/lib/PeoplePicker";
+import {InsertTarefaCentrais, SelectAll} from '../../../utils/Functions';
+import { IPersonaProps } from "office-ui-fabric-react/lib/components/Persona/Persona.types";
 
 export interface ICentraisProps {
     Title: string;
@@ -18,7 +21,12 @@ export interface ICentraisProps {
 
 export default function TarefaSitemicos(props: ITarefaSistemicorProps): JSX.Element {
     const [centrais, setCentrais] = useState<ICentraisProps[]>([]);
-    
+    const [revisoresObrigatorios, setObrigatorios] = useState<IPersonaProps[]>([]);
+
+    const onPeoplePickerChange = (items: IPersonaProps[]) =>{
+
+        setObrigatorios(items);
+    }
 
     useEffect(() => {
         const webUrl = window.location.protocol + "//" + window.location.hostname + "/" + window.location.pathname.split('/')[1] + "/" + window.location.pathname.split('/')[2]
@@ -31,14 +39,32 @@ export default function TarefaSitemicos(props: ITarefaSistemicorProps): JSX.Elem
             },
         });
 
+        SelectAll();
+
         sp.web.lists.getByTitle('Centrais').items.select('*,Title,CodigoCentral')()
             .then((data: ICentraisProps[]) => {
                 setCentrais(data)
                 console.log(data);
-            });
+            }); 
 
-            SelectAll();
     }, []);
+
+    const clickHandler = (revisoresObrigatorios: IPersonaProps[]) => {
+        return (event: React.MouseEvent) => {
+            const selectedItems = [];
+            const selectedCheckboxes = document.querySelectorAll(".selected-item:checked") as NodeListOf<HTMLInputElement>;
+            for (let i = 0; i < selectedCheckboxes.length; i++) {
+              selectedItems.push(selectedCheckboxes[i].value);
+            }
+            const dataParticipacao = (document.getElementById("datePariticipacao") as HTMLInputElement).value;
+            const selectedItemsString = selectedItems.join(", ");
+            // alert("Itens selecionados: " + selectedItemsString +" Data participação:"+ FormatDate(dataParticipacao));
+
+            InsertTarefaCentrais(sp,selectedItemsString, 3543, dataParticipacao);
+            
+          event.preventDefault();
+        }
+    }
     return (
         <>
             <div className="row border-top" style={{ paddingTop: '1rem' }}>
@@ -70,15 +96,39 @@ export default function TarefaSitemicos(props: ITarefaSistemicorProps): JSX.Elem
                     </tbody>
                 </table>
             </div>
+            <div>
+            <h6>Revisores Obrigatórios:</h6>               
+                <PeoplePicker
+                    context={props.context}
+                    personSelectionLimit={2}
+                    onChange = {onPeoplePickerChange}
+                    principalTypes={[
+                    PrincipalType.User,
+                    PrincipalType.SecurityGroup,
+                    PrincipalType.DistributionList
+                    ]}
+                    resolveDelay={1000}/>
+            </div>
+            <div>
+            <h6>Revisores Circunstanciais:</h6>               
+                <PeoplePicker
+                    context={props.context}
+                    personSelectionLimit={2}
+                    principalTypes={[
+                    PrincipalType.User,
+                    PrincipalType.SecurityGroup,
+                    PrincipalType.DistributionList
+                    ]} />
+            </div>           
             <div style={{ marginTop: 30 }}>
                 <h6>Selecione uma data para o período de colaboração:</h6>
                 <div className="col-5">
-                    <input type="date" className="form-control" id="date" />
+                    <input type="date" className="form-control" id="datePariticipacao" />
                 </div>
             </div>
             <div style={{ marginTop: 40 }}>
                 <div className='col'>
-                    <button className={`${customStyle['btn']} ${customStyle['btn-success']}`} style={{ marginRight: '0.8rem' }} onClick={SalvarTarefa}>ENVIAR TAREFA</button>
+                    <button className={`${customStyle['btn']} ${customStyle['btn-success']}`} style={{ marginRight: '0.8rem' }} onClick={clickHandler(revisoresObrigatorios)}>ENVIAR TAREFA</button>
                 </div>
             </div>
 
@@ -86,46 +136,3 @@ export default function TarefaSitemicos(props: ITarefaSistemicorProps): JSX.Elem
     );
 }
 
-
-function SelectAll(){
-
-    const selectAllCheckBox = document.getElementById("selected-all") as HTMLInputElement;
-
-    selectAllCheckBox.addEventListener('click', function(){
-        console.log("entrei aqui");
-        const selectItemCheckBox = document.querySelectorAll(".selected-item") as NodeListOf<HTMLInputElement>;      
-
-        for(let i=0; i < selectItemCheckBox.length; i++){
-            selectItemCheckBox[i].checked = this.checked;
-        }
-    });
-
-    const selectItemCheckBox = document.querySelectorAll(".select-item");
-    for (let i = 0; i < selectItemCheckBox.length; i++) {
-        selectItemCheckBox[i].addEventListener("click", function() {
-      if (!this.checked) {
-        selectAllCheckBox.checked = false;
-      } else {
-        const checkedCount = document.querySelectorAll(".select-item:checked").length;
-        console.log(checkedCount);
-        selectAllCheckBox.checked = checkedCount === selectItemCheckBox.length;
-      }
-    });
-}
-
-}
-
-function SalvarTarefa(){
-
-    // const getSelectedItemsButton = document.getElementById("get-selected-items");
-    // getSelectedItemsButton.addEventListener("click", function() {
-    const selectedItems = [];
-    const selectedCheckboxes = document.querySelectorAll(".selected-item:checked") as NodeListOf<HTMLInputElement>;
-    for (let i = 0; i < selectedCheckboxes.length; i++) {
-      selectedItems.push(selectedCheckboxes[i].value);
-    }
-    const selectedItemsString = selectedItems.join(", ");
-    alert("Itens selecionados: " + selectedItemsString);
-//   });
-
-}
