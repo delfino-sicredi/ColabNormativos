@@ -83,7 +83,7 @@ export async function InsertTarefaCentrais(sp: SPRest, Centrais: string, Normati
             Centrais: Centrais,
             NormativoRelacionadoId: NormativoRelacionadoId,
             PrazoCentrais: PrazoCentrais,
-            Revisor_x0020_Circunstancial: {users: RevisoresObrigatorios}   //[{ Key: RevisoresObrigatorios[0].id}] //   
+            Revisor_x0020_Circunstancial: {results: RevisoresObrigatorios}   //[{ Key: RevisoresObrigatorios[0].id}] //   
         });
     }
     catch (error) {

@@ -31,7 +31,7 @@ export default function TarefaSitemicos(props: ITarefaSistemicorProps): JSX.Elem
     let allPeople: any = [];
 
     const onPeoplePickerChange = (items: any[]) =>{
-        alert("entrei aqui saco");
+       
         allPeople.push(items);
         //setObrigatorios(items);   
         console.log(allPeople);
