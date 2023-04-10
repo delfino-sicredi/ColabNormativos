@@ -1,6 +1,7 @@
 import { SPRest } from "@pnp/sp";
+//import { IPeopleProps } from '../components/IColabProps';
 
-export const answerStyles  = {
+export const answerStyles = {
     content: {
         top: '50%',
         left: '50%',
@@ -73,4 +74,55 @@ export function GetTermValue(id: String, normativo: any) {
         if (normativo.TaxCatchAll.results[i].ID === id)
             return normativo.TaxCatchAll.results[i].Term;
     return null;
+}
+
+export async function InsertTarefaCentrais(sp: SPRest, Centrais: string, NormativoRelacionadoId: any, PrazoCentrais: string) {
+    try {
+        await sp.web.lists.getByTitle('GerenciamentoColaboracoes').items.add({
+            Centrais: Centrais,
+            NormativoRelacionadoId: NormativoRelacionadoId,
+            PrazoCentrais: PrazoCentrais
+            // Revisor_x0020_Circunstancial: {results: RevisoresObrigatorios}   //[{ Key: RevisoresObrigatorios[0].id}] //   
+        });
+        window.location.replace("http://pt.stackoverflow.com");
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+
+export function UpdateTarefaCentrais(idTarefa: number, sp: SPRest) {
+    (async () => {
+        let item =  await sp.web.lists.getByTitle('Tarefas de Normativos').items.getById(idTarefa).expand('StatusDaTarefa').get();
+        item.StatusDaTarefa = { Label: 'Aprovado', Value: 'Aprovado' };
+        await item.update();
+        console.log('Item atualizado com sucesso!');
+        
+    })().catch(console.log);
+}
+
+export function SelectAll() {
+
+    const selectAllCheckBox = document.getElementById("selected-all") as HTMLInputElement;
+
+    selectAllCheckBox.addEventListener('click', function () {
+        const selectItemCheckBox = document.querySelectorAll(".selected-item") as NodeListOf<HTMLInputElement>;
+
+        for (let i = 0; i < selectItemCheckBox.length; i++) {
+            selectItemCheckBox[i].checked = this.checked;
+        }
+    });
+
+    const selectItemCheckBox = document.querySelectorAll(".select-item");
+    for (let i = 0; i < selectItemCheckBox.length; i++) {
+        selectItemCheckBox[i].addEventListener("click", function () {
+            if (!this.checked) {
+                selectAllCheckBox.checked = false;
+            } else {
+                const checkedCount = document.querySelectorAll(".select-item:checked").length;
+                console.log(checkedCount);
+                selectAllCheckBox.checked = checkedCount === selectItemCheckBox.length;
+            }
+        });
+    }
 }

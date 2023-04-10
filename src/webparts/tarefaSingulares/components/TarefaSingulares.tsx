@@ -1,16 +1,11 @@
 import * as React from 'react';
-// import styles from './TarefaCentrais.module.scss';
-import { ITarefaCentraisProps } from './ITarefaCentraisProps';
-import Header from '../../../components/ColabHeader';
-import { sp } from "@pnp/sp/presets/all";
-import "@pnp/sp/lists";
-import "@pnp/sp/items";
-import '../../../style/index.css';
 import customStyle from '../../../style/colab.module.scss';
-import TarefaSistemicos from "../../tarefaCentrais/components/TarefaSistemicos";
+import { ITarefaSingularesProps } from './ITarefaSingularesProps';
+import { sp } from "@pnp/sp/presets/all";
+import Header from '../../../components/ColabHeader';
 
-export default class TarefaCentrais extends React.Component<ITarefaCentraisProps, {}> {
-  public render(): React.ReactElement<ITarefaCentraisProps> {
+export default class TarefaSingulares extends React.Component<ITarefaSingularesProps, {}> {
+  public render(): React.ReactElement<ITarefaSingularesProps> {
     const {
     } = this.props;
     const webUrl = window.location.protocol + "//" + window.location.hostname + "/" + window.location.pathname.split('/')[1] + "/" + window.location.pathname.split('/')[2]
@@ -21,8 +16,7 @@ export default class TarefaCentrais extends React.Component<ITarefaCentraisProps
       <section className={customStyle.colabNormativos}>
         <div className={`${customStyle['bg-white']} ${customStyle['border']} ${customStyle['rounded-5']}`}>
           <div className={customStyle.container} style={{ paddingBottom: '50px' }}>
-            <Header idNormativo='3543' />  
-            <TarefaSistemicos idNormativo='3543' context={this.props.context1}></TarefaSistemicos>
+            <Header idNormativo='3543' /> 
           </div>
         </div>
       </section>

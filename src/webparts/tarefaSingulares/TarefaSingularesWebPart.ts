@@ -8,29 +8,28 @@ import {
 import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
 import { IReadonlyTheme } from '@microsoft/sp-component-base';
 
-import * as strings from 'TarefaCentraisWebPartStrings';
-import TarefaCentrais from './components/TarefaCentrais';
-import { ITarefaCentraisProps } from './components/ITarefaCentraisProps';
+import * as strings from 'TarefaSingularesWebPartStrings';
+import TarefaSingulares from './components/TarefaSingulares';
+import { ITarefaSingularesProps } from './components/ITarefaSingularesProps';
 
-export interface ITarefaCentraisWebPartProps {
+export interface ITarefaSingularesWebPartProps {
   description: string;
 }
 
-export default class TarefaCentraisWebPart extends BaseClientSideWebPart<ITarefaCentraisWebPartProps> {
+export default class TarefaSingularesWebPart extends BaseClientSideWebPart<ITarefaSingularesWebPartProps> {
 
   private _isDarkTheme: boolean = false;
   private _environmentMessage: string = '';
 
   public render(): void {
-    const element: React.ReactElement<ITarefaCentraisProps> = React.createElement(
-      TarefaCentrais,
+    const element: React.ReactElement<ITarefaSingularesProps> = React.createElement(
+      TarefaSingulares,
       {
         description: this.properties.description,
         isDarkTheme: this._isDarkTheme,
         environmentMessage: this._environmentMessage,
         hasTeamsContext: !!this.context.sdks.microsoftTeams,
-        userDisplayName: this.context.pageContext.user.displayName,
-        context1: this.context
+        userDisplayName: this.context.pageContext.user.displayName
       }
     );
 
