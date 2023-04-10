@@ -34,11 +34,11 @@
         }
       ]
     },
-    "tarefa-compliance-web-part": {
+    "tarefa-singulares-web-part": {
       "components": [
         {
-          "entrypoint": "./lib/webparts/tarefaCompliance/TarefaComplianceWebPart.js",
-          "manifest": "./src/webparts/tarefaCompliance/TarefaComplianceWebPart.manifest.json"
+          "entrypoint": "./lib/webparts/tarefaSingulares/TarefaSingularesWebPart.js",
+          "manifest": "./src/webparts/tarefaSingulares/TarefaSingularesWebPart.manifest.json"
         }
       ]
     }
@@ -50,6 +50,6 @@
     "ColabCooperativasWebPartStrings": "lib/webparts/elaboraVoto/loc/{locale}.js",
     "TarefaCentraisWebPartStrings": "lib/webparts/tarefaCentrais/loc/{locale}.js",
     "ControlStrings": "node_modules/@pnp/spfx-controls-react/lib/loc/{locale}.js",
-    "TarefaComplianceWebPartStrings": "lib/webparts/tarefaCompliance/loc/{locale}.js"
+    "TarefaSingularesWebPartStrings": "lib/webparts/tarefaSingulares/loc/{locale}.js"
   }
 }

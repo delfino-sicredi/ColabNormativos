@@ -8,22 +8,22 @@ import {
 import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
 import { IReadonlyTheme } from '@microsoft/sp-component-base';
 
-import * as strings from 'TarefaComplianceWebPartStrings';
-import TarefaCompliance from './components/TarefaCompliance';
-import { ITarefaComplianceProps } from './components/ITarefaComplianceProps';
+import * as strings from 'TarefaSingularesWebPartStrings';
+import TarefaSingulares from './components/TarefaSingulares';
+import { ITarefaSingularesProps } from './components/ITarefaSingularesProps';
 
-export interface ITarefaComplianceWebPartProps {
+export interface ITarefaSingularesWebPartProps {
   description: string;
 }
 
-export default class TarefaComplianceWebPart extends BaseClientSideWebPart<ITarefaComplianceWebPartProps> {
+export default class TarefaSingularesWebPart extends BaseClientSideWebPart<ITarefaSingularesWebPartProps> {
 
   private _isDarkTheme: boolean = false;
   private _environmentMessage: string = '';
 
   public render(): void {
-    const element: React.ReactElement<ITarefaComplianceProps> = React.createElement(
-      TarefaCompliance,
+    const element: React.ReactElement<ITarefaSingularesProps> = React.createElement(
+      TarefaSingulares,
       {
         description: this.properties.description,
         isDarkTheme: this._isDarkTheme,

@@ -1,4 +1,4 @@
-export interface ITarefaComplianceProps {
+export interface ITarefaSingularesProps {
   description: string;
   isDarkTheme: boolean;
   environmentMessage: string;

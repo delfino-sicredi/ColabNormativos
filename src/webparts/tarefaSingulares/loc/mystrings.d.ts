@@ -1,4 +1,4 @@
-declare interface ITarefaComplianceWebPartStrings {
+declare interface ITarefaSingularesWebPartStrings {
   PropertyPaneDescription: string;
   BasicGroupName: string;
   DescriptionFieldLabel: string;
@@ -12,7 +12,7 @@ declare interface ITarefaComplianceWebPartStrings {
   AppOutlookEnvironment: string;
 }
 
-declare module 'TarefaComplianceWebPartStrings' {
-  const strings: ITarefaComplianceWebPartStrings;
+declare module 'TarefaSingularesWebPartStrings' {
+  const strings: ITarefaSingularesWebPartStrings;
   export = strings;
 }
