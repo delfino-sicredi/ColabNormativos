@@ -8,6 +8,7 @@ import * as Modal from 'react-modal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperclip } from '@fortawesome/free-solid-svg-icons';
 import { uploadStyles } from '../utils/Functions';
+import customStyle from '../style/colab.module.scss';
 
 export default function PnpFileUpload(props: IFileUploadProps): JSX.Element {
     const [modalUploadIsOpen, setUploadIsOpen] = useState(false);
@@ -82,33 +83,34 @@ export default function PnpFileUpload(props: IFileUploadProps): JSX.Element {
     return (
         <>
 
-            <button className="btn btn-success" onClick={openUploadModal}>
-                <FontAwesomeIcon icon={faPaperclip} className='me-2' color='white' />
+            <button className={`${customStyle['btn']} ${customStyle['btn-success']}`} onClick={openUploadModal}>
+                <FontAwesomeIcon icon={faPaperclip} className={`${customStyle['me-2']}`} color='white' />
                 Anexar Arquivo
             </button>
             {!msgSuccess ?
                 <Modal
                     isOpen={modalUploadIsOpen}
                     onRequestClose={closeUploadModal}
-                    style={uploadStyles}        >
-                    <div className="container">
-                        <div className="row p-3">
-                            <div className="col-md-12">
+                    style={uploadStyles} 
+                    portalClassName={customStyle.colabNormativos}>
+                    <div className={`${customStyle['container']}`}>
+                        <div className={`${customStyle['row']} ${customStyle['p-3']}`}>
+                            <div className={`${customStyle['col-md-12']}`}>
                                 <h4>Upload File</h4>
                             </div>
                         </div>
-                        <div className="row">
-                            <div className="col-md-12" style={{ display: 'flex', justifyContent: 'center' }}>
-                                <input type="file" name="myFile" id="newfile" className="form-control" style={{ width: '70%' }}></input>
+                        <div className={`${customStyle['row']}`}>
+                            <div className={`${customStyle['col-md-12']}`} style={{ display: 'flex', justifyContent: 'center' }}>
+                                <input type="file" name="myFile" id="newfile" className={`${customStyle['form-control']}`} style={{ width: '70%' }}></input>
                             </div>
                         </div>
-                        <div className="row">
-                            <div className="col-md-12 mb-4 mb-md-0 modal-btn">
-                                <button className='btn btn-danger' style={{ marginRight: '10px' }} onClick={closeUploadModal}>
+                        <div className={`${customStyle['row']}`}>
+                            <div className={`${customStyle['col-md-12']} ${customStyle['mb-4']} ${customStyle['mb-md-0']} ${customStyle['modal-btn']}`}>
+                                <button className={`${customStyle['btn']} ${customStyle['btn-danger']}`} style={{ marginRight: '10px' }} onClick={closeUploadModal}>
                                     Cancelar
                                 </button>
-                                <button onClick={filesave} className="btn btn-success">
-                                    UploadFile
+                                <button onClick={filesave} className={`${customStyle['btn']} ${customStyle['btn-success']}`}>
+                                    Upload File
                                 </button>
                             </div>
                         </div>

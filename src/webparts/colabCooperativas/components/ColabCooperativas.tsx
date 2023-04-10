@@ -11,7 +11,6 @@ import "@pnp/sp/folders";
 import customStyle from '../../../style/colab.module.scss'
 import ColabHeader from '../../../components/ColabHeader'; 
 import ColabComments from '../../../components/ColabComments';  
-import '../../../style/index.css';
 
 export default function colabEmissor(): JSX.Element {
   useEffect(() => {

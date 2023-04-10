@@ -28,35 +28,6 @@ export default class VotoNormativos extends React.Component<IVotoNormativosProps
                   <div className="card text-dark">
                     <div className="card-body p-4">
                       <h4 className="mb-0 text-center">Voto</h4>
-                      <div id="select-wrapper-674668" className="select-wrapper">
-                        <div className="form-outline">
-                          <input className="form-control select-input active" type="text" />
-                          <label className="form-label select-label active">
-                            Combo Voto
-                          </label>
-                          <span className="select-arrow">
-                          </span>
-                          <div className="form-notch">
-                            <div className="form-notch-leading" >
-                            </div>
-                            <div className="form-notch-middle" style={{width: "87.2px"}}>
-                            </div>
-                            <div className="form-notch-trailing">
-                            </div>
-                          </div>
-                          <div className="form-label select-fake-value">1</div></div>
-                        <select className="select select-initialized">
-                          <option value="1">1</option>
-                          <option value="2">2</option>
-                          <option value="3">3</option>
-                          <option value="4">4</option>
-                          <option value="5">5</option>
-                        </select>
-                       
-                        </div>
-
-
-
                       <div className="mt-4 form-outline">
                         <label className="form-label select-label active" style={{ marginLeft: 10, marginTop: -13 }} >Ao</label>
                         <select className="form-control" id="exampleFormControlSelect2" style={{ marginTop: -10 }}></select>
@@ -118,7 +89,7 @@ export default class VotoNormativos extends React.Component<IVotoNormativosProps
                         </div>
                       </div>
                       <div className="mt-4">
-                        <div className="form-outline">  
+                        <div className="form-outline">
                           <input type="checkbox" className="form-control select-input active" role="listbox" aria-multiselectable="false" aria-disabled="false" aria-haspopup="true" aria-expanded="false" readOnly={true} />
                           <div className="form-check" style={{ marginLeft: 10, marginTop: -20 }}>
                             <input className="form-check-input" type="radio" name="rbCustosEnvolvidos" value={"true"}></input>

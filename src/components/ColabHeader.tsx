@@ -10,9 +10,10 @@ import "@pnp/sp/files";
 import "@pnp/sp/folders";
 import { IColabHeaderProps, INormativos } from './IColabProps';
 import * as Modal from 'react-modal';
-import { answerStyles, FormatDate, GetTermValue } from '../utils/Functions';
+import { answerStyles, docStyles, FormatDate, GetTermValue } from '../utils/Functions';
 import { Counter } from './CountDown';
 import customStyle from '../style/colab.module.scss';
+import '../style/index.css';
 
 
 
@@ -62,40 +63,40 @@ export default function ColabHeader(props: IColabHeaderProps): JSX.Element {
                 console.log(data[0])
             });
 
-            sp.web.lists.getByTitle('CurtidasColaboracao').items.expand('ColaboracaoCooperativa,ColaboracaoCentral')
+        sp.web.lists.getByTitle('CurtidasColaboracao').items.expand('ColaboracaoCooperativa,ColaboracaoCentral')
             .select('*,Id,ColaboracaoCooperativa/Title,ColaboracaoCooperativa/Id,ColaboracaoCentral/Title,ColaboracaoCentral/Id')
             //.filter(`Id eq '${props.idNormativo}'`)
             ()
             .then((data) => {
-                console.log('Curtidas',data)
+                console.log('Curtidas', data)
             });
 
-            sp.web.lists.getByTitle('ColaboracaoCooperativas').items.expand('Author,NormativoRelacionado,Revisor')
+        sp.web.lists.getByTitle('ColaboracaoCooperativas').items.expand('Author,NormativoRelacionado,Revisor')
             .select('*,Created,Author/Title,Author/EMail,Revisor/EMail,Revisor/Title,NormativoRelacionado/Title')
             ()
             .then((data) => {
-                console.log('Coop',data[0])
+                console.log('Coop', data[0])
             });
 
-            sp.web.lists.getByTitle('ColaboracaoCentrais').items.expand('Author,NormativoRelacionado,Revisor,Colaboracoes')
+        sp.web.lists.getByTitle('ColaboracaoCentrais').items.expand('Author,NormativoRelacionado,Revisor,Colaboracoes')
             .select('*,Colaboracoes/Title,Colaboracoes/Id,Created,Author/Title,Author/EMail,Revisor/EMail,Revisor/Title,NormativoRelacionado/Title')
             ()
             .then((data) => {
-                console.log('Central',data);
+                console.log('Central', data);
             });
 
-            sp.web.lists.getByTitle('AnexoColaboracao').items.expand('ColaboracaoCentral,ColaboracaoCooperativa')
+        sp.web.lists.getByTitle('AnexoColaboracao').items.expand('ColaboracaoCentral,ColaboracaoCooperativa')
             .select('*,ColaboracaoCentral/Title,ColaboracaoCentral/Id,ColaboracaoCooperativa/Title,ColaboracaoCooperativa/Id')
             ()
             .then((data) => {
-                console.log('Anexo',data[0]);
+                console.log('Anexo', data[0]);
             });
     }, []);
 
 
     return (
         <>
-            <div className={customStyle.container} style={{ paddingBottom: '0.8rem' }}>
+            <div className={`${customStyle.container} ${customStyle.colabNormativos}`} style={{ paddingBottom: '0.8rem' }}>
                 <div className={`${customStyle['row']} ${customStyle['d-flex']} ${customStyle['justify-content-center']}`} style={{ paddingTop: '1rem' }}>
                     <div className={customStyle['col-md-6']}>
                         <div className={customStyle['text-dark']}>
@@ -257,7 +258,8 @@ export default function ColabHeader(props: IColabHeaderProps): JSX.Element {
             <Modal
                 isOpen={modalIsOpenDoc}
                 onRequestClose={closeModalDoc}
-                style={answerStyles}>
+                style={docStyles}
+                portalClassName={customStyle.colabNormativos}>
                 <div style={{ textAlign: 'right' }}>
                     <button onClick={closeModalDoc} className={`${customStyle['btn']} ${customStyle['btn-success']}`} style={{ marginRight: '10px' }}>Fechar X</button>
                 </div>
@@ -270,7 +272,8 @@ export default function ColabHeader(props: IColabHeaderProps): JSX.Element {
             <Modal
                 isOpen={modalIsOpenDocCkList}
                 onRequestClose={closeModalDocCkList}
-                style={answerStyles}>
+                style={answerStyles}
+                portalClassName={customStyle.colabNormativos}>
                 <button onClick={closeModalDocCkList} className='btn btn-outline-danger' style={{ marginRight: '10px' }}>Fechar X</button>
                 <form>
                     <iframe src='https://confederacaosicredi.sharepoint.com/sites/normativosinternosdev/Lists/Contribuicoes/Attachments/1/1666277777249_Checklist_V2_Norma%20.xlsx' style={{ position: 'fixed', width: '100%', height: '600px' }} />
@@ -281,51 +284,51 @@ export default function ColabHeader(props: IColabHeaderProps): JSX.Element {
             <Modal
                 isOpen={modalIsOpen}
                 onRequestClose={closeModal}
-                style={answerStyles} >
-                <h4 className="mb-0">Colaboração</h4>
-                <br></br>
-                <form>
-                    <div className="container">
-                    <div className="row mb-4">
-                            <div className="col-md-12">
-                                <div className={customStyle['select-wrapper']}>
-                                    <div className={customStyle['form-outline']}>
-                                        <input type="text" name="title" className={`${customStyle['select-input']} ${customStyle['active']}`} id='title' />
-                                        <label className={`${customStyle['form-label']} ${customStyle['select-label']} ${customStyle['active']}`}>Título</label>
-                                        <div className={customStyle['form-notch']}>
-                                            <div className={customStyle['form-notch-leading']} style={{ width: "9px" }}></div>
-                                            <div className={customStyle['form-notch-middle']} style={{ width: "39.6px" }}></div>
-                                            <div className={customStyle['form-notch-trailing']}>
-                                            </div>
+                style={answerStyles}
+                portalClassName={customStyle.colabNormativos} >
+
+                <div className="container">
+                    <h4 className={customStyle['mb-0']}>Colaboração</h4>
+                    <br></br>
+                    <div className={`${customStyle.row} ${customStyle['mb-4']}`}>
+                        <div className={customStyle['col-md-12']}>
+                            <div className={customStyle['select-wrapper']}>
+                                <div className={customStyle['form-outline']}>
+                                    <input value={"CAD SicrediPar"} className={`${customStyle['form-control']} ${customStyle['select-input']} ${customStyle['active']}`} type="text" />
+                                    <label className={`${customStyle['form-label']} ${customStyle['select-label']} ${customStyle['active']}`}>Título</label>
+                                    <div className={customStyle['form-notch']}>
+                                        <div className={customStyle['form-notch-leading']} style={{ width: "9px" }}></div>
+                                        <div className={customStyle['form-notch-middle']} style={{ width: "69.6px" }}></div>
+                                        <div className={customStyle['form-notch-trailing']}>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="col-md-12">
-                                <div className={customStyle['select-wrapper']}>
-                                    <div className={customStyle['form-outline']}>
-                                        <textarea name="answer" rows={10} cols={20} className={`${customStyle['form-control']} ${customStyle['select-input']} ${customStyle['active']}`} id='answer' />
-                                        <label className={`${customStyle['form-label']} ${customStyle['select-label']} ${customStyle['active']}`}>Colaboração</label>
-                                        <div className={customStyle['form-notch']}>
-                                            <div className={customStyle['form-notch-leading']} style={{ width: "9px" }}></div>
-                                            <div className={customStyle['form-notch-middle']} style={{ width: "81.6px" }}></div>
-                                            <div className={customStyle['form-notch-trailing']}>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="col-md-12 modal-btn">
-                                <button onClick={closeModal} className='btn btn-danger' style={{ marginRight: '10px' }}>Cancelar</button>
-                                <button className={`${customStyle['btn']} ${customStyle['btn-success']}`} >Salvar</button>
                             </div>
                         </div>
                     </div>
-                </form>
+                    <div className={customStyle.row}>
+                        <div className={customStyle['col-md-12']}>
+                            <div className={customStyle['select-wrapper']}>
+                                <div className={customStyle['form-outline']}>
+                                    <textarea name="answer" rows={10} cols={20} className={`${customStyle['form-control']} ${customStyle['select-input']} ${customStyle['active']}`} id='answer' />
+                                    <label className={`${customStyle['form-label']} ${customStyle['select-label']} ${customStyle['active']}`}>Colaboração</label>
+                                    <div className={customStyle['form-notch']}>
+                                        <div className={customStyle['form-notch-leading']} style={{ width: "9px" }}></div>
+                                        <div className={customStyle['form-notch-middle']} style={{ width: "81.6px" }}></div>
+                                        <div className={customStyle['form-notch-trailing']}>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className={customStyle.row}>
+                        <div className={`${customStyle['col-md-12']} ${customStyle['modal-btn']}`}>
+                            <button onClick={closeModal} className={`${customStyle.btn} ${customStyle['btn-danger']}`} style={{ marginRight: '10px' }}>Cancelar</button>
+                            <button className={`${customStyle['btn']} ${customStyle['btn-success']}`}>Salvar</button>
+                        </div>
+                    </div>
+                </div>
             </Modal>
 
         </>
