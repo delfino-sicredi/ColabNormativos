@@ -33,6 +33,14 @@
           "manifest": "./src/webparts/tarefaCentrais/TarefaCentraisWebPart.manifest.json"
         }
       ]
+    },
+    "tarefa-compliance-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/tarefaCompliance/TarefaComplianceWebPart.js",
+          "manifest": "./src/webparts/tarefaCompliance/TarefaComplianceWebPart.manifest.json"
+        }
+      ]
     }
   },
   "externals": {},
@@ -41,6 +49,7 @@
     "VotoNormativosWebPartStrings": "lib/webparts/elaboraVoto/loc/{locale}.js",
     "ColabCooperativasWebPartStrings": "lib/webparts/elaboraVoto/loc/{locale}.js",
     "TarefaCentraisWebPartStrings": "lib/webparts/tarefaCentrais/loc/{locale}.js",
-    "ControlStrings": "node_modules/@pnp/spfx-controls-react/lib/loc/{locale}.js"
+    "ControlStrings": "node_modules/@pnp/spfx-controls-react/lib/loc/{locale}.js",
+    "TarefaComplianceWebPartStrings": "lib/webparts/tarefaCompliance/loc/{locale}.js"
   }
 }

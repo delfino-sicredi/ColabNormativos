@@ -14,6 +14,7 @@ import { PeoplePicker, PrincipalType } from "@pnp/spfx-controls-react/lib/People
 import {InsertTarefaCentrais, SelectAll} from '../../../utils/Functions';
 //import { IPersonaProps } from "office-ui-fabric-react/lib/components/Persona/Persona.types";
 import {  UrlQueryParameterCollection } from '@microsoft/sp-core-library';
+// import Toasty from '../../../components/Toast';
 
 export interface ICentraisProps {
     Title: string;
@@ -25,6 +26,7 @@ export interface IPeopleProps {
 
 export default function TarefaSitemicos(props: ITarefaSistemicorProps): JSX.Element {
     const [centrais, setCentrais] = useState<ICentraisProps[]>([]);
+    //const [msgSuccess, setMsgSuccess] = useState<string>('');
     //const [revisoresObrigatorios, setObrigatorios] = useState<any[]>([]); 
         
 
@@ -48,8 +50,8 @@ export default function TarefaSitemicos(props: ITarefaSistemicorProps): JSX.Elem
         });
 
         const queryParameters = new UrlQueryParameterCollection(window.location.href);
-        const id: number = parseInt(queryParameters.getValue("tarefa"));
-        console.log("Id Tarefa", id);
+        const idTarefa: number = parseInt(queryParameters.getValue("tarefa"));
+        console.log("Id Tarefa", idTarefa);
         
         SelectAll();
 
@@ -61,8 +63,9 @@ export default function TarefaSitemicos(props: ITarefaSistemicorProps): JSX.Elem
 
     }, []);
 
-    const clickHandler = (allPeople: any[]) => {
+    const clickHandler = (idTarefa: number) => {
         return (event: React.MouseEvent) => {
+            console.log(idTarefa);
             const selectedItems = [];
             const selectedCheckboxes = document.querySelectorAll(".selected-item:checked") as NodeListOf<HTMLInputElement>;
             for (let i = 0; i < selectedCheckboxes.length; i++) {
@@ -70,9 +73,15 @@ export default function TarefaSitemicos(props: ITarefaSistemicorProps): JSX.Elem
             }
             const dataParticipacao = (document.getElementById("datePariticipacao") as HTMLInputElement).value;
             const selectedItemsString = selectedItems.join(", ");
-            // alert("Itens selecionados: " + selectedItemsString +" Data participação:"+ FormatDate(dataParticipacao));
-
-            InsertTarefaCentrais(sp,selectedItemsString, 3543, dataParticipacao, allPeople);
+            
+            if(selectedItemsString == '' || dataParticipacao == ''){
+                // setMsgSuccess("Preencha todos os dados antes de enviar!");   
+                // console.log("entrei com valores vazio!")     
+                alert("Por favor preencha todos os valores antes de enviar!");       
+            }else{
+                InsertTarefaCentrais(sp,selectedItemsString, 3543, dataParticipacao);
+                //UpdateTarefaCentrais(idTarefa, sp);
+            }
             
           event.preventDefault();
         }
@@ -142,7 +151,7 @@ export default function TarefaSitemicos(props: ITarefaSistemicorProps): JSX.Elem
                     <button className={`${customStyle['btn']} ${customStyle['btn-success']}`} style={{ marginRight: '0.8rem' }} onClick={clickHandler(allPeople)}>ENVIAR TAREFA</button>
                 </div>
             </div>
-
+            {/* <Toasty type="warning" position='top-right' mensage={msgSuccess} delay={5000} /> */}
         </>
     );
 }

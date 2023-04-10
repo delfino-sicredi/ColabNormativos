@@ -76,19 +76,29 @@ export function GetTermValue(id: String, normativo: any) {
     return null;
 }
 
-export async function InsertTarefaCentrais(sp: SPRest, Centrais: string, NormativoRelacionadoId: any, PrazoCentrais: string, RevisoresObrigatorios: any[]) {
-
+export async function InsertTarefaCentrais(sp: SPRest, Centrais: string, NormativoRelacionadoId: any, PrazoCentrais: string) {
     try {
         await sp.web.lists.getByTitle('GerenciamentoColaboracoes').items.add({
             Centrais: Centrais,
             NormativoRelacionadoId: NormativoRelacionadoId,
-            PrazoCentrais: PrazoCentrais,
-            Revisor_x0020_Circunstancial: {results: RevisoresObrigatorios}   //[{ Key: RevisoresObrigatorios[0].id}] //   
+            PrazoCentrais: PrazoCentrais
+            // Revisor_x0020_Circunstancial: {results: RevisoresObrigatorios}   //[{ Key: RevisoresObrigatorios[0].id}] //   
         });
+        window.location.replace("http://pt.stackoverflow.com");
     }
     catch (error) {
         console.log(error);
     }
+}
+
+export function UpdateTarefaCentrais(idTarefa: number, sp: SPRest) {
+    (async () => {
+        let item =  await sp.web.lists.getByTitle('Tarefas de Normativos').items.getById(idTarefa).expand('StatusDaTarefa').get();
+        item.StatusDaTarefa = { Label: 'Aprovado', Value: 'Aprovado' };
+        await item.update();
+        console.log('Item atualizado com sucesso!');
+        
+    })().catch(console.log);
 }
 
 export function SelectAll() {
@@ -96,7 +106,6 @@ export function SelectAll() {
     const selectAllCheckBox = document.getElementById("selected-all") as HTMLInputElement;
 
     selectAllCheckBox.addEventListener('click', function () {
-        console.log("entrei aqui");
         const selectItemCheckBox = document.querySelectorAll(".selected-item") as NodeListOf<HTMLInputElement>;
 
         for (let i = 0; i < selectItemCheckBox.length; i++) {
