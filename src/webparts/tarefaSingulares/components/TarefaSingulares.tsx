@@ -3,6 +3,8 @@ import customStyle from '../../../style/colab.module.scss';
 import { ITarefaSingularesProps } from './ITarefaSingularesProps';
 import { sp } from "@pnp/sp/presets/all";
 import Header from '../../../components/ColabHeader';
+import TarefaCooperativa from "../../tarefaSingulares/components/TarefaCooperativas";
+import '../../../style/index.css';
 
 export default class TarefaSingulares extends React.Component<ITarefaSingularesProps, {}> {
   public render(): React.ReactElement<ITarefaSingularesProps> {
@@ -17,6 +19,7 @@ export default class TarefaSingulares extends React.Component<ITarefaSingularesP
         <div className={`${customStyle['bg-white']} ${customStyle['border']} ${customStyle['rounded-5']}`}>
           <div className={customStyle.container} style={{ paddingBottom: '50px' }}>
             <Header idNormativo='3543' /> 
+            <TarefaCooperativa idNormativo='3543'></TarefaCooperativa>
           </div>
         </div>
       </section>

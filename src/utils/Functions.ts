@@ -84,11 +84,26 @@ export async function InsertTarefaCentrais(sp: SPRest, Centrais: string, Normati
             PrazoCentrais: PrazoCentrais
             // Revisor_x0020_Circunstancial: {results: RevisoresObrigatorios}   //[{ Key: RevisoresObrigatorios[0].id}] //   
         });
-        window.location.replace("http://pt.stackoverflow.com");
+        window.location.replace("https://sicredihomologacao.sharepoint.com/sites/NormativosInternos/SitePages/Tarefas.aspx");
     }
     catch (error) {
         console.log(error);
     }
+}
+
+export function InsertTarefaCooperativas(sp: SPRest, Cooperativas: string, NormativoRelacionadoId: any, PrazoCooperativas: string) {
+    (async () => {
+        let item = sp.web.lists.getByTitle("GerenciamentoColaboracoes").items.getById(NormativoRelacionadoId);
+        const i = await item.update({
+            Cooperativas: Cooperativas,
+            PrazoCooperativas: PrazoCooperativas
+        });
+        console.log(i);
+        window.location.replace("https://sicredihomologacao.sharepoint.com/sites/NormativosInternos/SitePages/Tarefas.aspx");
+    })().catch(console.log);
+
+
+    //this.setState({ showmessageBar: true, message: "Item updated sucessfully" }); 
 }
 
 export function UpdateTarefaCentrais(idTarefa: number, sp: SPRest) {
