@@ -8,10 +8,9 @@ import "@pnp/sp/items";
 import "@pnp/sp/attachments";
 import "@pnp/sp/files";
 import "@pnp/sp/folders";
-import { ITarefaSistemicorProps } from './ITarefaSistemicos.Props';
+import { ITarefaCooperativasProps } from './ITarefaCooperativas.Props';
 import customStyle from '../../../style/colab.module.scss';
-import { PeoplePicker, PrincipalType } from "@pnp/spfx-controls-react/lib/PeoplePicker";
-import {InsertTarefaCentrais, SelectAll} from '../../../utils/Functions';
+import {InsertTarefaCentrais, InsertTarefaCooperativas, SelectAll} from '../../../utils/Functions';
 import {  UrlQueryParameterCollection } from '@microsoft/sp-core-library';
 // import Toasty from '../../../components/Toast';
 
@@ -23,20 +22,11 @@ export interface IPeopleProps {
     id: string;
 }
 
-export default function TarefaSitemicos(props: ITarefaSistemicorProps): JSX.Element {
-    const [centrais, setCentrais] = useState<ICentraisProps[]>([]);
+export default function TarefaSitemicos(props: ITarefaCooperativasProps): JSX.Element {
+    const [cooperatvias, setCooperativas] = useState<ICentraisProps[]>([]);
     // const [msgSuccess, setMsgSuccess] = useState<string>('');
     //const [revisoresObrigatorios, setObrigatorios] = useState<any[]>([]); 
         
-
-    let allPeople: any = [];
-
-    const onPeoplePickerChange = (items: any[]) =>{
-       
-        allPeople.push(items);
-        //setObrigatorios(items);   
-        console.log(allPeople);
-    }
     useEffect(() => {
         const webUrl = window.location.protocol + "//" + window.location.hostname + "/" + window.location.pathname.split('/')[1] + "/" + window.location.pathname.split('/')[2]
         sp.setup({
@@ -54,17 +44,17 @@ export default function TarefaSitemicos(props: ITarefaSistemicorProps): JSX.Elem
         
         SelectAll();
 
-        sp.web.lists.getByTitle('Centrais').items.select('*,Title,CodigoCentral')()
+        sp.web.lists.getByTitle('Cooperativas').items.filter("Central/CodigoCentral eq '0012'").select('*,Title,CodigoCooperativa')()
             .then((data: ICentraisProps[]) => {
-                setCentrais(data)
+                setCooperativas(data)
                 console.log(data);
             }); 
 
     }, []);
 
-    const clickHandler = (idTarefa: number) => {
-        return (event: React.MouseEvent) => {
-            console.log(idTarefa);
+    const clickHandler = () => {
+         return (event: React.MouseEvent) => {
+        //     console.log(idTarefa);
             const selectedItems = [];
             const selectedCheckboxes = document.querySelectorAll(".selected-item:checked") as NodeListOf<HTMLInputElement>;
             for (let i = 0; i < selectedCheckboxes.length; i++) {
@@ -74,10 +64,10 @@ export default function TarefaSitemicos(props: ITarefaSistemicorProps): JSX.Elem
             const selectedItemsString = selectedItems.join(", ");
             if(selectedItemsString == '' || dataParticipacao == ''){ 
                 // console.log("entrei com valores vazio!")     
-                 alert("Por favor preencha todos os valores antes de enviar!"); 
+                alert("Por favor preencha todos os valores antes de enviar!"); 
                 // setMsgSuccess("Por favor preencha todos os valores antes de enviar!")
             }else{
-                InsertTarefaCentrais(sp,selectedItemsString, 3543, dataParticipacao);
+                InsertTarefaCooperativas(sp,selectedItemsString, 3543, dataParticipacao);
                 //UpdateTarefaCentrais(idTarefa, sp);
             }
             
@@ -101,43 +91,20 @@ export default function TarefaSitemicos(props: ITarefaSistemicorProps): JSX.Elem
                         </tr>
                     </thead>
                     <tbody>
-                        {centrais.map((central, idx) => {
+                        {cooperatvias.map((cooperativas, idx) => {
                             return (
                                 <>
                                     <tr>
-                                        <td><input type="checkbox" className="selected-item form-check-input" value={central.CodigoCentral}></input></td>
-                                        <td>{central.CodigoCentral}</td>
-                                        <td>{central.Title}</td>
+                                        <td><input type="checkbox" className="selected-item form-check-input" value={cooperativas.CodigoCentral}></input></td>
+                                        <td>{cooperativas.CodigoCentral}</td>
+                                        <td>{cooperativas.Title}</td>
                                     </tr>
                                 </>
                             );
                         })}
                     </tbody>
                 </table>
-            </div>
-            <div>
-            <h6>Revisores Obrigatórios:</h6>               
-                <PeoplePicker
-                    context={props.context}
-                    personSelectionLimit={2}
-                    onChange = {onPeoplePickerChange}
-                    principalTypes={[
-                    PrincipalType.User,
-                    PrincipalType.SecurityGroup,
-                    PrincipalType.DistributionList
-                    ]}/>
-            </div>
-            <div>
-            <h6>Revisores Circunstanciais:</h6>               
-                <PeoplePicker
-                    context={props.context}
-                    personSelectionLimit={2}
-                    principalTypes={[
-                    PrincipalType.User,
-                    PrincipalType.SecurityGroup,
-                    PrincipalType.DistributionList
-                    ]} />
-            </div>           
+            </div>         
             <div style={{ marginTop: 30 }}>
                 <h6>Selecione uma data para o período de colaboração:</h6>
                 <div className="col-5">
@@ -146,7 +113,7 @@ export default function TarefaSitemicos(props: ITarefaSistemicorProps): JSX.Elem
             </div>
             <div style={{ marginTop: 40 }}>
                 <div className='col'>
-                    <button className={`${customStyle['btn']} ${customStyle['btn-success']}`} style={{ marginRight: '0.8rem' }} onClick={clickHandler(allPeople)}>ENVIAR TAREFA</button>
+                    <button className={`${customStyle['btn']} ${customStyle['btn-success']}`} style={{ marginRight: '0.8rem' }} onClick={clickHandler()}>ENVIAR TAREFA</button>
                 </div>
             </div>
             {/* <Toasty type="warning" position='top-right' mensage={msgSuccess} delay={5000} /> */}
