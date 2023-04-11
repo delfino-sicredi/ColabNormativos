@@ -10,13 +10,13 @@ import "@pnp/sp/files";
 import "@pnp/sp/folders";
 import { ITarefaCooperativasProps } from './ITarefaCooperativas.Props';
 import customStyle from '../../../style/colab.module.scss';
-import {InsertTarefaCentrais, InsertTarefaCooperativas, SelectAll} from '../../../utils/Functions';
+import {InsertTarefaCooperativas, SelectAll} from '../../../utils/Functions';
 import {  UrlQueryParameterCollection } from '@microsoft/sp-core-library';
 // import Toasty from '../../../components/Toast';
 
 export interface ICentraisProps {
     Title: string;
-    CodigoCentral: string
+    CodigoCooperativa: string
 }
 export interface IPeopleProps {
     id: string;
@@ -41,8 +41,6 @@ export default function TarefaSitemicos(props: ITarefaCooperativasProps): JSX.El
         const queryParameters = new UrlQueryParameterCollection(window.location.href);
         const idTarefa: number = parseInt(queryParameters.getValue("tarefa"));
         console.log("Id Tarefa", idTarefa);
-        
-        SelectAll();
 
         sp.web.lists.getByTitle('Cooperativas').items.filter("Central/CodigoCentral eq '0012'").select('*,Title,CodigoCooperativa')()
             .then((data: ICentraisProps[]) => {
@@ -50,6 +48,9 @@ export default function TarefaSitemicos(props: ITarefaCooperativasProps): JSX.El
                 console.log(data);
             }); 
 
+            SelectAll();
+ 
+            
     }, []);
 
     const clickHandler = () => {
@@ -85,7 +86,7 @@ export default function TarefaSitemicos(props: ITarefaCooperativasProps): JSX.El
                 <table className="table table-group-divide">
                     <thead className="table-light">
                         <tr>
-                            <th><input type="checkbox" className="form-check-input" id='selected-all' ></input></th>
+                            <th><input type="checkbox" className="form-check-input" id='selected-all'></input></th>
                             <th>Código</th>
                             <th>Nome</th>
                         </tr>
@@ -95,8 +96,8 @@ export default function TarefaSitemicos(props: ITarefaCooperativasProps): JSX.El
                             return (
                                 <>
                                     <tr>
-                                        <td><input type="checkbox" className="selected-item form-check-input" value={cooperativas.CodigoCentral}></input></td>
-                                        <td>{cooperativas.CodigoCentral}</td>
+                                        <td><input type="checkbox" className="selected-item form-check-input" value={cooperativas.CodigoCooperativa}></input></td>
+                                        <td>{cooperativas.CodigoCooperativa}</td>
                                         <td>{cooperativas.Title}</td>
                                     </tr>
                                 </>

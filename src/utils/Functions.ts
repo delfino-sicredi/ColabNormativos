@@ -76,13 +76,13 @@ export function GetTermValue(id: String, normativo: any) {
     return null;
 }
 
-export async function InsertTarefaCentrais(sp: SPRest, Centrais: string, NormativoRelacionadoId: any, PrazoCentrais: string) {
+export async function InsertTarefaCentrais(sp: SPRest, Centrais: string, NormativoRelacionadoId: any, PrazoCentrais: string, allPeople: any) {
     try {
         await sp.web.lists.getByTitle('GerenciamentoColaboracoes').items.add({
             Centrais: Centrais,
             NormativoRelacionadoId: NormativoRelacionadoId,
-            PrazoCentrais: PrazoCentrais
-            // Revisor_x0020_Circunstancial: {results: RevisoresObrigatorios}   //[{ Key: RevisoresObrigatorios[0].id}] //   
+            PrazoCentrais: PrazoCentrais,
+            Revisor_x0020_CircunstancialId: { results: allPeople }  
         });
         window.location.replace("https://sicredihomologacao.sharepoint.com/sites/NormativosInternos/SitePages/Tarefas.aspx");
     }
@@ -93,7 +93,7 @@ export async function InsertTarefaCentrais(sp: SPRest, Centrais: string, Normati
 
 export function InsertTarefaCooperativas(sp: SPRest, Cooperativas: string, NormativoRelacionadoId: any, PrazoCooperativas: string) {
     (async () => {
-        let item = sp.web.lists.getByTitle("GerenciamentoColaboracoes").items.getById(NormativoRelacionadoId);
+        let item = sp.web.lists.getByTitle("GerenciamentoColaboracoes").items.getById(27);
         const i = await item.update({
             Cooperativas: Cooperativas,
             PrazoCooperativas: PrazoCooperativas
@@ -118,11 +118,12 @@ export function UpdateTarefaCentrais(idTarefa: number, sp: SPRest) {
 
 export function SelectAll() {
 
+    console.log("Entrei no select ALL");
     const selectAllCheckBox = document.getElementById("selected-all") as HTMLInputElement;
 
     selectAllCheckBox.addEventListener('click', function () {
         const selectItemCheckBox = document.querySelectorAll(".selected-item") as NodeListOf<HTMLInputElement>;
-
+        debugger
         for (let i = 0; i < selectItemCheckBox.length; i++) {
             selectItemCheckBox[i].checked = this.checked;
         }
@@ -141,3 +142,6 @@ export function SelectAll() {
         });
     }
 }
+
+
+

@@ -11,8 +11,8 @@ import "@pnp/sp/folders";
 import { ITarefaSistemicorProps } from './ITarefaSistemicos.Props';
 import customStyle from '../../../style/colab.module.scss';
 import { PeoplePicker, PrincipalType } from "@pnp/spfx-controls-react/lib/PeoplePicker";
-import {InsertTarefaCentrais, SelectAll} from '../../../utils/Functions';
-import {  UrlQueryParameterCollection } from '@microsoft/sp-core-library';
+import { InsertTarefaCentrais, SelectAll } from '../../../utils/Functions';
+import { UrlQueryParameterCollection } from '@microsoft/sp-core-library';
 // import Toasty from '../../../components/Toast';
 
 export interface ICentraisProps {
@@ -27,16 +27,26 @@ export default function TarefaSitemicos(props: ITarefaSistemicorProps): JSX.Elem
     const [centrais, setCentrais] = useState<ICentraisProps[]>([]);
     // const [msgSuccess, setMsgSuccess] = useState<string>('');
     //const [revisoresObrigatorios, setObrigatorios] = useState<any[]>([]); 
-        
+
 
     let allPeople: any = [];
 
-    const onPeoplePickerChange = (items: any[]) =>{
-       
-        allPeople.push(items);
-        //setObrigatorios(items);   
-        console.log(allPeople);
+    const onPeoplePickerChange = async (items: any[]) => {
+
+        let users = [];
+
+        for (let item in items) {
+
+            const revisores = await sp.web.siteUsers.getByEmail(items[item].secondaryText)();
+
+            users.push(revisores.Id);
+        }
+
+        console.log(users);
+
+        allPeople = users
     }
+
     useEffect(() => {
         const webUrl = window.location.protocol + "//" + window.location.hostname + "/" + window.location.pathname.split('/')[1] + "/" + window.location.pathname.split('/')[2]
         sp.setup({
@@ -51,14 +61,16 @@ export default function TarefaSitemicos(props: ITarefaSistemicorProps): JSX.Elem
         const queryParameters = new UrlQueryParameterCollection(window.location.href);
         const idTarefa: number = parseInt(queryParameters.getValue("tarefa"));
         console.log("Id Tarefa", idTarefa);
-        
+
         SelectAll();
 
         sp.web.lists.getByTitle('Centrais').items.select('*,Title,CodigoCentral')()
             .then((data: ICentraisProps[]) => {
                 setCentrais(data)
                 console.log(data);
-            }); 
+            });
+
+
 
     }, []);
 
@@ -68,20 +80,20 @@ export default function TarefaSitemicos(props: ITarefaSistemicorProps): JSX.Elem
             const selectedItems = [];
             const selectedCheckboxes = document.querySelectorAll(".selected-item:checked") as NodeListOf<HTMLInputElement>;
             for (let i = 0; i < selectedCheckboxes.length; i++) {
-              selectedItems.push(selectedCheckboxes[i].value);
+                selectedItems.push(selectedCheckboxes[i].value);
             }
             const dataParticipacao = (document.getElementById("datePariticipacao") as HTMLInputElement).value;
             const selectedItemsString = selectedItems.join(", ");
-            if(selectedItemsString == '' || dataParticipacao == ''){ 
+            if (selectedItemsString == '' || dataParticipacao == '') {
                 // console.log("entrei com valores vazio!")     
-                 alert("Por favor preencha todos os valores antes de enviar!"); 
+                alert("Por favor preencha todos os valores antes de enviar!");
                 // setMsgSuccess("Por favor preencha todos os valores antes de enviar!")
-            }else{
-                InsertTarefaCentrais(sp,selectedItemsString, 3543, dataParticipacao);
+            } else {
+                InsertTarefaCentrais(sp, selectedItemsString, 3543, dataParticipacao, allPeople);
                 //UpdateTarefaCentrais(idTarefa, sp);
             }
-            
-          event.preventDefault();
+
+            event.preventDefault();
         }
     }
     return (
@@ -116,28 +128,28 @@ export default function TarefaSitemicos(props: ITarefaSistemicorProps): JSX.Elem
                 </table>
             </div>
             <div>
-            <h6>Revisores Obrigatórios:</h6>               
+                <h6>Revisores Obrigatórios:</h6>
                 <PeoplePicker
                     context={props.context}
                     personSelectionLimit={2}
-                    onChange = {onPeoplePickerChange}
+                    onChange={onPeoplePickerChange}
                     principalTypes={[
-                    PrincipalType.User,
-                    PrincipalType.SecurityGroup,
-                    PrincipalType.DistributionList
-                    ]}/>
+                        PrincipalType.User,
+                        PrincipalType.SecurityGroup,
+                        PrincipalType.DistributionList
+                    ]} />
             </div>
             <div>
-            <h6>Revisores Circunstanciais:</h6>               
+                <h6>Revisores Circunstanciais:</h6>
                 <PeoplePicker
                     context={props.context}
                     personSelectionLimit={2}
                     principalTypes={[
-                    PrincipalType.User,
-                    PrincipalType.SecurityGroup,
-                    PrincipalType.DistributionList
+                        PrincipalType.User,
+                        PrincipalType.SecurityGroup,
+                        PrincipalType.DistributionList
                     ]} />
-            </div>           
+            </div>
             <div style={{ marginTop: 30 }}>
                 <h6>Selecione uma data para o período de colaboração:</h6>
                 <div className="col-5">
