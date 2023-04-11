@@ -1,4 +1,5 @@
 import { SPRest } from "@pnp/sp";
+
 //import { IPeopleProps } from '../components/IColabProps';
 
 export const answerStyles = {
@@ -108,11 +109,11 @@ export function InsertTarefaCooperativas(sp: SPRest, Cooperativas: string, Norma
 
 export function UpdateTarefaCentrais(idTarefa: number, sp: SPRest) {
     (async () => {
-        let item =  await sp.web.lists.getByTitle('Tarefas de Normativos').items.getById(idTarefa).expand('StatusDaTarefa').get();
+        let item = await sp.web.lists.getByTitle('Tarefas de Normativos').items.getById(idTarefa).expand('StatusDaTarefa').get();
         item.StatusDaTarefa = { Label: 'Aprovado', Value: 'Aprovado' };
         await item.update();
         console.log('Item atualizado com sucesso!');
-        
+
     })().catch(console.log);
 }
 
@@ -141,3 +142,33 @@ export function SelectAll() {
         });
     }
 }
+
+export function getChecked() {
+    const listCheckBox = document.querySelectorAll(".selected-item") as NodeListOf<HTMLInputElement>;
+    let checked: any = []
+    for (let index = 0; index < listCheckBox.length; index++) {
+        if (listCheckBox[index].checked)
+            checked.push(listCheckBox[index]);
+    }
+    return checked;
+}
+
+export function getCheckBoxes() {
+    const listCheckBox = document.getElementsByTagName("input") as HTMLCollectionOf<HTMLInputElement>;
+    let checkBox: any = []
+    for (let index = 0; index < listCheckBox.length; index++) {
+        if (listCheckBox[index].getAttribute("type") == "checkbox" && listCheckBox[index].getAttribute("id") != "selectedAll")
+            checkBox.push(listCheckBox[index]);
+    }
+
+    return checkBox;
+}
+
+export function setSelectAll() {
+    const checkBoxes = getCheckBoxes();
+    const selectAll = document.getElementById("selectedAll") as HTMLInputElement;
+    debugger
+    for (let index = 0; index < checkBoxes.length; index++)
+        !selectAll.checked ? checkBoxes[index].checked = false : checkBoxes[index].checked = true;
+}
+

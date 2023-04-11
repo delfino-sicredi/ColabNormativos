@@ -10,8 +10,8 @@ import "@pnp/sp/files";
 import "@pnp/sp/folders";
 import { ITarefaCooperativasProps } from './ITarefaCooperativas.Props';
 import customStyle from '../../../style/colab.module.scss';
-import {InsertTarefaCentrais, InsertTarefaCooperativas, SelectAll} from '../../../utils/Functions';
-import {  UrlQueryParameterCollection } from '@microsoft/sp-core-library';
+import { InsertTarefaCooperativas, setSelectAll } from '../../../utils/Functions';
+import { UrlQueryParameterCollection } from '@microsoft/sp-core-library';
 // import Toasty from '../../../components/Toast';
 
 export interface ICentraisProps {
@@ -26,7 +26,7 @@ export default function TarefaSitemicos(props: ITarefaCooperativasProps): JSX.El
     const [cooperatvias, setCooperativas] = useState<ICentraisProps[]>([]);
     // const [msgSuccess, setMsgSuccess] = useState<string>('');
     //const [revisoresObrigatorios, setObrigatorios] = useState<any[]>([]); 
-        
+
     useEffect(() => {
         const webUrl = window.location.protocol + "//" + window.location.hostname + "/" + window.location.pathname.split('/')[1] + "/" + window.location.pathname.split('/')[2]
         sp.setup({
@@ -41,37 +41,37 @@ export default function TarefaSitemicos(props: ITarefaCooperativasProps): JSX.El
         const queryParameters = new UrlQueryParameterCollection(window.location.href);
         const idTarefa: number = parseInt(queryParameters.getValue("tarefa"));
         console.log("Id Tarefa", idTarefa);
-        
-        SelectAll();
+
+        // SelectAll();
 
         sp.web.lists.getByTitle('Cooperativas').items.filter("Central/CodigoCentral eq '0012'").select('*,Title,CodigoCooperativa')()
             .then((data: ICentraisProps[]) => {
                 setCooperativas(data)
                 console.log(data);
-            }); 
+            });
 
     }, []);
 
     const clickHandler = () => {
-         return (event: React.MouseEvent) => {
-        //     console.log(idTarefa);
+        return (event: React.MouseEvent) => {
+            //     console.log(idTarefa);
             const selectedItems = [];
             const selectedCheckboxes = document.querySelectorAll(".selected-item:checked") as NodeListOf<HTMLInputElement>;
             for (let i = 0; i < selectedCheckboxes.length; i++) {
-              selectedItems.push(selectedCheckboxes[i].value);
+                selectedItems.push(selectedCheckboxes[i].value);
             }
             const dataParticipacao = (document.getElementById("datePariticipacao") as HTMLInputElement).value;
             const selectedItemsString = selectedItems.join(", ");
-            if(selectedItemsString == '' || dataParticipacao == ''){ 
+            if (selectedItemsString == '' || dataParticipacao == '') {
                 // console.log("entrei com valores vazio!")     
-                alert("Por favor preencha todos os valores antes de enviar!"); 
+                alert("Por favor preencha todos os valores antes de enviar!");
                 // setMsgSuccess("Por favor preencha todos os valores antes de enviar!")
-            }else{
-                InsertTarefaCooperativas(sp,selectedItemsString, 3543, dataParticipacao);
+            } else {
+                InsertTarefaCooperativas(sp, selectedItemsString, 3543, dataParticipacao);
                 //UpdateTarefaCentrais(idTarefa, sp);
             }
-            
-          event.preventDefault();
+
+            event.preventDefault();
         }
     }
     return (
@@ -85,7 +85,7 @@ export default function TarefaSitemicos(props: ITarefaCooperativasProps): JSX.El
                 <table className="table table-group-divide">
                     <thead className="table-light">
                         <tr>
-                            <th><input type="checkbox" className="form-check-input" id='selected-all' ></input></th>
+                            <th><input type="checkbox" className="form-check-input" id='selectedAll' onChange={setSelectAll} ></input></th>
                             <th>Código</th>
                             <th>Nome</th>
                         </tr>
@@ -104,7 +104,7 @@ export default function TarefaSitemicos(props: ITarefaCooperativasProps): JSX.El
                         })}
                     </tbody>
                 </table>
-            </div>         
+            </div>
             <div style={{ marginTop: 30 }}>
                 <h6>Selecione uma data para o período de colaboração:</h6>
                 <div className="col-5">
