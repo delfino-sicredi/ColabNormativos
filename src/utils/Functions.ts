@@ -56,11 +56,11 @@ export function FormatDate(date: string) {
 }
 
 
-export function AnswerComment(idComment: number, sp: SPRest) {
+export function AnswerComment(idComment: number, sp: SPRest, answer: string ) {
     (async () => {
         let item = sp.web.lists.getByTitle("ColaboracaoCooperativas").items.getById(idComment);
         const i = await item.update({
-            Resposta: 'Teste Apenas'
+            Resposta: answer
         });
         console.log(i);
     })().catch(console.log);
