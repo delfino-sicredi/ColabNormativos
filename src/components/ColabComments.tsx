@@ -137,7 +137,7 @@ export default function ColabNormativos(props: IColabCommentsProps): JSX.Element
                                     <span><FontAwesomeIcon icon={faPaperclip} className={`${customStyle['me-2']}`} color='#3FA110' /> Arquivo 1</span>
                                 </div>
                                 <p>
-                                    <ReadMore text={comment.Colaboracao} lines={2} readMoreText="Ver mais" readLessText="Ver Menos"  />
+                                    <ReadMore text={comment.Colaboracao} lines={2} readMoreText="Ver mais" readLessText="Ver Menos" />
                                 </p>
                                 <p>
                                     <button className={like && comment.ID == idItem.toString() ? `${customStyle['btn']} ${customStyle['btn-liked']}` : `${customStyle['btn']} ${customStyle['btn-success']}`} style={{ marginRight: '0.8rem', paddingLeft: '0.125rem' }} onClick={() => managerLikes(1)}>

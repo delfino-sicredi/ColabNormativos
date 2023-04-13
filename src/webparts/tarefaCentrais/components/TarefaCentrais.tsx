@@ -21,7 +21,7 @@ export default class TarefaCentrais extends React.Component<ITarefaCentraisProps
       <section className={customStyle.colabNormativos}>
         <div className={`${customStyle['bg-white']} ${customStyle['border']} ${customStyle['rounded-5']}`}>
           <div className={customStyle.container} style={{ paddingBottom: '50px' }}>
-            <Header idNormativo='3543' />  
+            <Header idNormativo='3543' isComments={false} />  
             <TarefaSistemicos idNormativo='3543' context={this.props.context1}></TarefaSistemicos>
           </div>
         </div>

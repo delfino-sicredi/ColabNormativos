@@ -9,8 +9,8 @@ import "@pnp/sp/attachments";
 import "@pnp/sp/files";
 import "@pnp/sp/folders";
 import customStyle from '../../../style/colab.module.scss'
-import ColabHeader from '../../../components/ColabHeader'; 
-import ColabComments from '../../../components/ColabComments';  
+import ColabHeader from '../../../components/ColabHeader';
+import ColabComments from '../../../components/ColabComments';
 
 export default function colabEmissor(): JSX.Element {
   useEffect(() => {
@@ -29,7 +29,7 @@ export default function colabEmissor(): JSX.Element {
       <section className={customStyle.colabNormativos}>
         <div className={`${customStyle['bg-white']} ${customStyle['border']} ${customStyle['rounded-5']}`}>
           <div className={customStyle.container} style={{ paddingBottom: '50px' }}>
-            <ColabHeader idNormativo='3543' />  
+            <ColabHeader idNormativo='3543' isComments={true} />
             <ColabComments idNormativo='3543' />
           </div>
         </div>

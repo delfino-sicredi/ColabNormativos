@@ -18,7 +18,7 @@ export default class TarefaSingulares extends React.Component<ITarefaSingularesP
       <section className={customStyle.colabNormativos}>
         <div className={`${customStyle['bg-white']} ${customStyle['border']} ${customStyle['rounded-5']}`}>
           <div className={customStyle.container} style={{ paddingBottom: '50px' }}>
-            <Header idNormativo='3543' /> 
+            <Header idNormativo='3543' isComments={false}  /> 
             <TarefaCooperativa idNormativo='3543'></TarefaCooperativa>
           </div>
         </div>

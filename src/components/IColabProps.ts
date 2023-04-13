@@ -4,6 +4,7 @@ export interface IColabGeralNormativosProps {
 
 export interface IColabHeaderProps {
   idNormativo: string;
+  isComments: boolean;
 }
 
 export interface IColabCommentsProps {

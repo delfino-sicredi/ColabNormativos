@@ -22,6 +22,7 @@ export default function ColabHeader(props: IColabHeaderProps): JSX.Element {
     const [modalIsOpenDoc, setIsOpenDoc] = React.useState(false);
     const [modalIsOpenDocCkList, setIsOpenDocCkList] = React.useState(false);
     const [normativo, setNormativo] = useState<INormativos[]>([]);
+    //const [groups, setGroups] = useState[]>([]);
     const [modalIsOpen, setIsOpen] = React.useState(false);
 
     function openModalDoc() {
@@ -91,6 +92,17 @@ export default function ColabHeader(props: IColabHeaderProps): JSX.Element {
             .then((data) => {
                 console.log('Anexo', data[0]);
             });
+
+        sp.web.siteUsers
+            .getByLoginName('i:0#.f|membership|gustavo_delfino@sicredihomologacao.com.br')
+            .select('Id,name').get()
+            .then(user => {
+                sp.web.siteUsers.getById(user.Id).groups.get()
+                    .then(groups => {
+                        groups.forEach(group => console.log('Grupos', group.Title))
+                    });
+            })
+        //.then(console.log)
     }, []);
 
 
@@ -105,7 +117,7 @@ export default function ColabHeader(props: IColabHeaderProps): JSX.Element {
                         </div>
                     </div>
                     <div className={`${customStyle['col-md-6']} ${customStyle['d-flex']} ${customStyle['justify-content-end']}`}>
-                        <Counter></Counter>
+                        {props.isComments ? <Counter></Counter> : ''}
                     </div>
                 </div>
                 <div className={`${customStyle['row']} ${customStyle['d-flex']} ${customStyle['justify-content-center']}`}>
@@ -250,7 +262,7 @@ export default function ColabHeader(props: IColabHeaderProps): JSX.Element {
                     <div className={customStyle['col-md-6']}>
                         <button className={`${customStyle['btn']} ${customStyle['btn-success']}`} style={{ marginRight: '0.8rem' }} onClick={openModalDoc}>Abrir Documento</button>
                         <a className={`${customStyle['btn']} ${customStyle['btn-success']}`} style={{ marginRight: '0.8rem' }} href='https://confederacaosicredi.sharepoint.com/sites/normativosinternosdev/Lists/Contribuicoes/Attachments/1/1666277777249_Checklist_V2_Norma%20.xlsx'>Checklist</a>
-                        <button className={`${customStyle['btn']} ${customStyle['btn-success']}`} onClick={openModal}>Adicionar Colaboração</button>
+                        {props.isComments ? <button className={`${customStyle['btn']} ${customStyle['btn-success']}`} onClick={openModal}>Adicionar Colaboração</button> : ''}
                     </div>
                 </div>
             </div>
@@ -294,11 +306,11 @@ export default function ColabHeader(props: IColabHeaderProps): JSX.Element {
                         <div className={customStyle['col-md-12']}>
                             <div className={customStyle['select-wrapper']}>
                                 <div className={customStyle['form-outline']}>
-                                    <input value={"CAD SicrediPar"} className={`${customStyle['form-control']} ${customStyle['select-input']} ${customStyle['active']}`} type="text" />
+                                    <input className={`${customStyle['form-control']} ${customStyle['select-input']} ${customStyle['active']}`} type="text" />
                                     <label className={`${customStyle['form-label']} ${customStyle['select-label']} ${customStyle['active']}`}>Título</label>
                                     <div className={customStyle['form-notch']}>
                                         <div className={customStyle['form-notch-leading']} style={{ width: "9px" }}></div>
-                                        <div className={customStyle['form-notch-middle']} style={{ width: "69.6px" }}></div>
+                                        <div className={customStyle['form-notch-middle']} style={{ width: "39.6px" }}></div>
                                         <div className={customStyle['form-notch-trailing']}>
                                         </div>
                                     </div>
