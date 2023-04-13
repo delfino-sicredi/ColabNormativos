@@ -54,7 +54,7 @@ export default function TarefaSitemicos(props: ITarefaCooperativasProps): JSX.El
 
     const clickHandler = () => {
         return (event: React.MouseEvent) => {
-            //     console.log(idTarefa);
+           
             const selectedItems = [];
             const selectedCheckboxes = document.querySelectorAll(".selected-item:checked") as NodeListOf<HTMLInputElement>;
             for (let i = 0; i < selectedCheckboxes.length; i++) {
@@ -67,7 +67,7 @@ export default function TarefaSitemicos(props: ITarefaCooperativasProps): JSX.El
                 alert("Por favor preencha todos os valores antes de enviar!");
                 // setMsgSuccess("Por favor preencha todos os valores antes de enviar!")
             } else {
-                InsertTarefaCooperativas(sp, selectedItemsString, 3543, dataParticipacao);
+                InsertTarefaCooperativas(sp, selectedItemsString, 9194, dataParticipacao);
                 //UpdateTarefaCentrais(idTarefa, sp);
             }
 
