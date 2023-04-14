@@ -25,18 +25,33 @@ export interface IPeopleProps {
 
 export default function TarefaSitemicos(props: ITarefaSistemicorProps): JSX.Element {
     const [centrais, setCentrais] = useState<ICentraisProps[]>([]);
-    // const [msgSuccess, setMsgSuccess] = useState<string>('');
-    //const [revisoresObrigatorios, setObrigatorios] = useState<any[]>([]); 
-        
 
-    let allPeople: any = [];
+    const queryParameters = new UrlQueryParameterCollection(window.location.href);
+        const idTarefa: number = parseInt(queryParameters.getValue("tarefa"));
 
-    const onPeoplePickerChange = (items: any[]) =>{
-       
-        allPeople.push(items);
-        //setObrigatorios(items);   
-        console.log(allPeople);
+    let allPeopleObrigatorios: any = [];
+    let allPeopleCircunstanciais: any = [];
+    
+    const onPeoplePickerChangeObrigatorios = async (items: any[]) => {
+
+        let users = [];
+        for (let item in items) {
+            const obrigatorios = await sp.web.siteUsers.getByEmail(items[item].secondaryText)();
+            users.push(obrigatorios.Id);
+        }
+        allPeopleObrigatorios = users  
     }
+
+    const onPeoplePickerCircunstanciais = async (items: any[]) => {
+
+        let users2 = [];
+        for (let item in items) {
+            const circunstanciais = await sp.web.siteUsers.getByEmail(items[item].secondaryText)();
+            users2.push(circunstanciais.Id);
+        }
+        allPeopleCircunstanciais = users2  
+    }
+
     useEffect(() => {
         const webUrl = window.location.protocol + "//" + window.location.hostname + "/" + window.location.pathname.split('/')[1] + "/" + window.location.pathname.split('/')[2]
         sp.setup({
@@ -48,9 +63,8 @@ export default function TarefaSitemicos(props: ITarefaSistemicorProps): JSX.Elem
             },
         });
 
-        const queryParameters = new UrlQueryParameterCollection(window.location.href);
-        const idTarefa: number = parseInt(queryParameters.getValue("tarefa"));
-        console.log("Id Tarefa", idTarefa);
+        
+        
         
         SelectAll();
 
@@ -62,7 +76,7 @@ export default function TarefaSitemicos(props: ITarefaSistemicorProps): JSX.Elem
 
     }, []);
 
-    const clickHandler = (idTarefa: number) => {
+    const clickHandler = () => {
         return (event: React.MouseEvent) => {
             console.log(idTarefa);
             const selectedItems = [];
@@ -72,13 +86,12 @@ export default function TarefaSitemicos(props: ITarefaSistemicorProps): JSX.Elem
             }
             const dataParticipacao = (document.getElementById("datePariticipacao") as HTMLInputElement).value;
             const selectedItemsString = selectedItems.join(", ");
+
             if(selectedItemsString == '' || dataParticipacao == ''){ 
-                // console.log("entrei com valores vazio!")     
                  alert("Por favor preencha todos os valores antes de enviar!"); 
                 // setMsgSuccess("Por favor preencha todos os valores antes de enviar!")
             }else{
-                InsertTarefaCentrais(sp,selectedItemsString, 3543, dataParticipacao);
-                //UpdateTarefaCentrais(idTarefa, sp);
+                InsertTarefaCentrais(sp,selectedItemsString, 9195, dataParticipacao, allPeopleCircunstanciais, allPeopleObrigatorios);
             }
             
           event.preventDefault();
@@ -120,7 +133,7 @@ export default function TarefaSitemicos(props: ITarefaSistemicorProps): JSX.Elem
                 <PeoplePicker
                     context={props.context}
                     personSelectionLimit={2}
-                    onChange = {onPeoplePickerChange}
+                    onChange = {onPeoplePickerChangeObrigatorios}
                     principalTypes={[
                     PrincipalType.User,
                     PrincipalType.SecurityGroup,
@@ -132,6 +145,7 @@ export default function TarefaSitemicos(props: ITarefaSistemicorProps): JSX.Elem
                 <PeoplePicker
                     context={props.context}
                     personSelectionLimit={2}
+                    onChange={onPeoplePickerCircunstanciais}
                     principalTypes={[
                     PrincipalType.User,
                     PrincipalType.SecurityGroup,
@@ -146,7 +160,7 @@ export default function TarefaSitemicos(props: ITarefaSistemicorProps): JSX.Elem
             </div>
             <div style={{ marginTop: 40 }}>
                 <div className='col'>
-                    <button className={`${customStyle['btn']} ${customStyle['btn-success']}`} style={{ marginRight: '0.8rem' }} onClick={clickHandler(allPeople)}>ENVIAR TAREFA</button>
+                    <button className={`${customStyle['btn']} ${customStyle['btn-success']}`} style={{ marginRight: '0.8rem' }} onClick={clickHandler()}>ENVIAR TAREFA</button>
                 </div>
             </div>
             {/* <Toasty type="warning" position='top-right' mensage={msgSuccess} delay={5000} /> */}

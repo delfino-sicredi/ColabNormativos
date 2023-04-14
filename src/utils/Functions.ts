@@ -64,8 +64,6 @@ export function AnswerComment(idComment: number, sp: SPRest, answer: string ) {
         });
         console.log(i);
     })().catch(console.log);
-
-    //this.setState({ showmessageBar: true, message: "Item updated sucessfully" }); 
 }
 
 
@@ -77,13 +75,14 @@ export function GetTermValue(id: String, normativo: any) {
     return null;
 }
 
-export async function InsertTarefaCentrais(sp: SPRest, Centrais: string, NormativoRelacionadoId: any, PrazoCentrais: string) {
+export async function InsertTarefaCentrais(sp: SPRest, Centrais: string, NormativoRelacionadoId: any, PrazoCentrais: string, revisoresCircunstancial: any[], revisoresObrigatorio: any[]) {
     try {
         await sp.web.lists.getByTitle('GerenciamentoColaboracoes').items.add({
             Centrais: Centrais,
             NormativoRelacionadoId: NormativoRelacionadoId,
-            PrazoCentrais: PrazoCentrais
-            // Revisor_x0020_Circunstancial: {results: RevisoresObrigatorios}   //[{ Key: RevisoresObrigatorios[0].id}] //   
+            PrazoCentrais: PrazoCentrais,
+            Revisor_x0020_CircunstancialId: { results: revisoresCircunstancial },
+            RevisoresObrigatoriosId: { results: revisoresObrigatorio }
         });
         window.location.replace("https://sicredihomologacao.sharepoint.com/sites/NormativosInternos/SitePages/Tarefas.aspx");
     }
