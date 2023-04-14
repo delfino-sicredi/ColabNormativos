@@ -27,7 +27,8 @@ export default function TarefaSitemicos(props: ITarefaSistemicorProps): JSX.Elem
     const [centrais, setCentrais] = useState<ICentraisProps[]>([]);
 
     const queryParameters = new UrlQueryParameterCollection(window.location.href);
-        const idTarefa: number = parseInt(queryParameters.getValue("tarefa"));
+    const idTarefa: number = parseInt(queryParameters.getValue("tarefa"));
+    console.log(idTarefa);
 
     let allPeopleObrigatorios: any = [];
     let allPeopleCircunstanciais: any = [];
@@ -39,7 +40,8 @@ export default function TarefaSitemicos(props: ITarefaSistemicorProps): JSX.Elem
             const obrigatorios = await sp.web.siteUsers.getByEmail(items[item].secondaryText)();
             users.push(obrigatorios.Id);
         }
-        allPeopleObrigatorios = users  
+        allPeopleObrigatorios = users;
+        console.log(allPeopleObrigatorios);
     }
 
     const onPeoplePickerCircunstanciais = async (items: any[]) => {
@@ -49,7 +51,8 @@ export default function TarefaSitemicos(props: ITarefaSistemicorProps): JSX.Elem
             const circunstanciais = await sp.web.siteUsers.getByEmail(items[item].secondaryText)();
             users2.push(circunstanciais.Id);
         }
-        allPeopleCircunstanciais = users2  
+        allPeopleCircunstanciais = users2;
+        console.log(allPeopleCircunstanciais); 
     }
 
     useEffect(() => {
@@ -63,8 +66,6 @@ export default function TarefaSitemicos(props: ITarefaSistemicorProps): JSX.Elem
             },
         });
 
-        
-        
         
         SelectAll();
 
@@ -91,7 +92,7 @@ export default function TarefaSitemicos(props: ITarefaSistemicorProps): JSX.Elem
                  alert("Por favor preencha todos os valores antes de enviar!"); 
                 // setMsgSuccess("Por favor preencha todos os valores antes de enviar!")
             }else{
-                InsertTarefaCentrais(sp,selectedItemsString, 9195, dataParticipacao, allPeopleCircunstanciais, allPeopleObrigatorios);
+                InsertTarefaCentrais(sp,selectedItemsString, 9195, dataParticipacao, allPeopleCircunstanciais, allPeopleObrigatorios, idTarefa);
             }
             
           event.preventDefault();

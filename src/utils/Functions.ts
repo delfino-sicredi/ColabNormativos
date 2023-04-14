@@ -75,14 +75,16 @@ export function GetTermValue(id: String, normativo: any) {
     return null;
 }
 
-export async function InsertTarefaCentrais(sp: SPRest, Centrais: string, NormativoRelacionadoId: any, PrazoCentrais: string, revisoresCircunstancial: any[], revisoresObrigatorio: any[]) {
+export async function InsertTarefaCentrais(sp: SPRest, Centrais: string, NormativoRelacionadoId: any, PrazoCentrais: string, revisoresCircunstancial: any[], revisoresObrigatorio: any[], tarefaId: number) {
+    debugger
     try {
         await sp.web.lists.getByTitle('GerenciamentoColaboracoes').items.add({
             Centrais: Centrais,
             NormativoRelacionadoId: NormativoRelacionadoId,
             PrazoCentrais: PrazoCentrais,
             Revisor_x0020_CircunstancialId: { results: revisoresCircunstancial },
-            RevisoresObrigatoriosId: { results: revisoresObrigatorio }
+            RevisoresObrigatoriosId: { results: revisoresObrigatorio },
+            TarefaRespondidaId: tarefaId
         });
         window.location.replace("https://sicredihomologacao.sharepoint.com/sites/NormativosInternos/SitePages/Tarefas.aspx");
     }
