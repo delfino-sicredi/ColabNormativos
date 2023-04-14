@@ -166,6 +166,7 @@ export function getCheckBoxes() {
 }
 
 export function setSelectAll() {
+    console.log("Entrei aqui");
     const checkBoxes = getCheckBoxes();
     const selectAll = document.getElementById("selectedAll") as HTMLInputElement;
     debugger

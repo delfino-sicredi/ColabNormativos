@@ -14,18 +14,20 @@ import { InsertTarefaCooperativas, setSelectAll } from '../../../utils/Functions
 import { UrlQueryParameterCollection } from '@microsoft/sp-core-library';
 // import Toasty from '../../../components/Toast';
 
-export interface ICentraisProps {
+export interface ICooperativaProps {
     Title: string;
-    CodigoCentral: string
+    CodigoCooperativa: string
 }
 export interface IPeopleProps {
     id: string;
 }
 
 export default function TarefaSitemicos(props: ITarefaCooperativasProps): JSX.Element {
-    const [cooperatvias, setCooperativas] = useState<ICentraisProps[]>([]);
-    // const [msgSuccess, setMsgSuccess] = useState<string>('');
-    //const [revisoresObrigatorios, setObrigatorios] = useState<any[]>([]); 
+    const [cooperatvias, setCooperativas] = useState<ICooperativaProps[]>([]);
+
+    const queryParameters = new UrlQueryParameterCollection(window.location.href);
+    const idTarefa: number = parseInt(queryParameters.getValue("tarefa"));
+    console.log("Id Tarefa", idTarefa);
 
     useEffect(() => {
         const webUrl = window.location.protocol + "//" + window.location.hostname + "/" + window.location.pathname.split('/')[1] + "/" + window.location.pathname.split('/')[2]
@@ -38,14 +40,8 @@ export default function TarefaSitemicos(props: ITarefaCooperativasProps): JSX.El
             },
         });
 
-        const queryParameters = new UrlQueryParameterCollection(window.location.href);
-        const idTarefa: number = parseInt(queryParameters.getValue("tarefa"));
-        console.log("Id Tarefa", idTarefa);
-
-        // SelectAll();
-
         sp.web.lists.getByTitle('Cooperativas').items.filter("Central/CodigoCentral eq '0012'").select('*,Title,CodigoCooperativa')()
-            .then((data: ICentraisProps[]) => {
+            .then((data: ICooperativaProps[]) => {
                 setCooperativas(data)
                 console.log(data);
             });
@@ -95,8 +91,8 @@ export default function TarefaSitemicos(props: ITarefaCooperativasProps): JSX.El
                             return (
                                 <>
                                     <tr>
-                                        <td><input type="checkbox" className="selected-item form-check-input" value={cooperativas.CodigoCentral}></input></td>
-                                        <td>{cooperativas.CodigoCentral}</td>
+                                        <td><input type="checkbox" className="selected-item form-check-input" value={cooperativas.CodigoCooperativa}></input></td>
+                                        <td>{cooperativas.CodigoCooperativa}</td>
                                         <td>{cooperativas.Title}</td>
                                     </tr>
                                 </>
