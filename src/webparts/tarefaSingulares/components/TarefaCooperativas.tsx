@@ -27,6 +27,9 @@ export default function TarefaSitemicos(props: ITarefaCooperativasProps): JSX.El
 
     const queryParameters = new UrlQueryParameterCollection(window.location.href);
     const idTarefa: number = parseInt(queryParameters.getValue("tarefa"));
+    const idColaboracao: number = parseInt(queryParameters.getValue("GerenciamentoColaboracaoId"));
+    const codigoCentral: string = (queryParameters.getValue("CodigoCentral"));
+
     console.log("Id Tarefa", idTarefa);
 
     useEffect(() => {
@@ -40,11 +43,12 @@ export default function TarefaSitemicos(props: ITarefaCooperativasProps): JSX.El
             },
         });
 
-        sp.web.lists.getByTitle('Cooperativas').items.filter("Central/CodigoCentral eq '0012'").select('*,Title,CodigoCooperativa')()
+        sp.web.lists.getByTitle('Cooperativas').items.filter("Central/CodigoCentral eq '" + codigoCentral +"'").select('*,Title,CodigoCooperativa')()
             .then((data: ICooperativaProps[]) => {
                 setCooperativas(data)
                 console.log(data);
             });
+
 
     }, []);
 
@@ -63,7 +67,7 @@ export default function TarefaSitemicos(props: ITarefaCooperativasProps): JSX.El
                 alert("Por favor preencha todos os valores antes de enviar!");
                 // setMsgSuccess("Por favor preencha todos os valores antes de enviar!")
             } else {
-                InsertTarefaCooperativas(sp, selectedItemsString, 3543, dataParticipacao);
+                InsertTarefaCooperativas(sp, selectedItemsString, idColaboracao, dataParticipacao, idTarefa);
                 //UpdateTarefaCentrais(idTarefa, sp);
             }
 

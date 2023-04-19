@@ -93,12 +93,14 @@ export async function InsertTarefaCentrais(sp: SPRest, Centrais: string, Normati
     }
 }
 
-export function InsertTarefaCooperativas(sp: SPRest, Cooperativas: string, NormativoRelacionadoId: any, PrazoCooperativas: string) {
+export function InsertTarefaCooperativas(sp: SPRest, Cooperativas: string, NormativoRelacionadoId: any, PrazoCooperativas: string, tarefaId: number) {
     (async () => {
         let item = sp.web.lists.getByTitle("GerenciamentoColaboracoes").items.getById(NormativoRelacionadoId);
         const i = await item.update({
             Cooperativas: Cooperativas,
-            PrazoCooperativas: PrazoCooperativas
+            PrazoCooperativas: PrazoCooperativas,
+            TarefaRespondidaId: tarefaId
+
         });
         console.log(i);
         window.location.replace("https://sicredihomologacao.sharepoint.com/sites/NormativosInternos/SitePages/Tarefas.aspx");
