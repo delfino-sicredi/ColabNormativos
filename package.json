@@ -29,6 +29,7 @@
     "@pnp/spfx-controls-react": "^3.13.0",
     "fluentui-react": "0.0.1",
     "office-ui-fabric-react": "^7.199.1",
+    "query-string": "^5.1.1",
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "react-modal": "^3.16.1",
@@ -49,6 +50,8 @@
     "@microsoft/sp-build-web": "1.16.1",
     "@microsoft/sp-module-interfaces": "1.16.1",
     "@rushstack/eslint-config": "2.5.1",
+    "@types/query-string": "^5.1.0",
+    "@types/react": "17.0.45",
     "@types/react-dom": "17.0.17",
     "@types/react-modal": "^3.13.1",
     "@types/webpack-env": "~1.15.2",
@@ -57,7 +60,6 @@
     "gulp": "4.0.2",
     "reactjs-countdown-hook": "^1.0.5",
     "read-more-react": "^1.0.10",
-    "typescript": "4.5.5",
-    "@types/react": "17.0.45"
+    "typescript": "4.5.5"
   }
 }

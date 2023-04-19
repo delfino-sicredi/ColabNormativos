@@ -1,4 +1,6 @@
 import { SPRest } from "@pnp/sp";
+//import { List } from "semantic-ui-react";
+//import { List } from '../components/IColabProps'
 
 //import { IPeopleProps } from '../components/IColabProps';
 
@@ -56,16 +58,46 @@ export function FormatDate(date: string) {
 }
 
 
-export function AnswerComment(idComment: number, sp: SPRest, answer: string ) {
-    (async () => {
-        let item = sp.web.lists.getByTitle("ColaboracaoCooperativas").items.getById(idComment);
-        const i = await item.update({
-            Resposta: answer
-        });
-        console.log(i);
-    })().catch(console.log);
+export async function AnswerComment(idComment: number, sp: SPRest, list: string, answer: string) {
+    try {
+        debugger
+        let item = sp.web.lists.getByTitle(list).items.getById(idComment);
+        await item.update({
+            Resposta: answer,
+            DataResposta: new Date()
+        }).then((upItem) => { console.log(upItem) });
+    } catch (error) {
+        console.log(error);
+    }
+}
 
-    //this.setState({ showmessageBar: true, message: "Item updated sucessfully" }); 
+export async function AddComments(sp: SPRest, list: string, central: string | null, coop: string | null, normativoId: number, title: string, comment: string) {
+    try {
+        await sp.web.lists.getByTitle(list).items.add({
+            Title: title,
+            Colaboracao: comment,
+            NormativoRelacionadoId: normativoId,
+            Cooperativa: coop,
+            Central: central
+        }).then((newItem) => { console.log(newItem) });
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+
+export async function GetItems(sp: SPRest, listName: string, expand: string, fields: string, filter: string) {
+    try {
+        let result = await sp.web.lists.getByTitle(listName).items.expand(expand)
+            .select(fields)
+            .filter(filter).get();
+
+        return result;
+    } catch (error) {
+        console.log(error);
+    }
+
+
 }
 
 

@@ -8,14 +8,16 @@ import "@pnp/sp/items";
 import "@pnp/sp/attachments";
 import "@pnp/sp/files";
 import "@pnp/sp/folders";
-import { IColabHeaderProps, INormativos } from './IColabProps';
+import { IColabHeaderProps, INormativos, List, webUrl } from './IColabProps';
 import * as Modal from 'react-modal';
-import { answerStyles, docStyles, FormatDate, GetTermValue } from '../utils/Functions';
+import * as queryString from 'query-string';
+import {
+    answerStyles, docStyles, FormatDate, GetTermValue, GetItems,
+    AddComments
+} from '../utils/Functions';
 import { Counter } from './CountDown';
 import customStyle from '../style/colab.module.scss';
 import '../style/index.css';
-
-
 
 
 export default function ColabHeader(props: IColabHeaderProps): JSX.Element {
@@ -24,6 +26,7 @@ export default function ColabHeader(props: IColabHeaderProps): JSX.Element {
     const [normativo, setNormativo] = useState<INormativos[]>([]);
     //const [groups, setGroups] = useState[]>([]);
     const [modalIsOpen, setIsOpen] = React.useState(false);
+    const valueProps = queryString.parse(location.search);
 
     function openModalDoc() {
         setIsOpenDoc(true);
@@ -45,8 +48,14 @@ export default function ColabHeader(props: IColabHeaderProps): JSX.Element {
         setIsOpen(false);
     }
 
+    function saveCommet() {
+        debugger
+        const title = (document.getElementById('title') as HTMLInputElement).value;
+        const comment = (document.getElementById('comment') as HTMLInputElement).value;
+        AddComments(sp, List.ColabCoop.Title, valueProps.CodigoCentral, valueProps.CodigoCentral, Number(valueProps.NormativoId), title, comment)
+    }
+
     useEffect(() => {
-        const webUrl = window.location.protocol + "//" + window.location.hostname + "/" + window.location.pathname.split('/')[1] + "/" + window.location.pathname.split('/')[2]
         sp.setup({
             sp: {
                 headers: {
@@ -56,53 +65,15 @@ export default function ColabHeader(props: IColabHeaderProps): JSX.Element {
             },
         });
 
-        sp.web.lists.getByTitle('Normativos').items.expand('TaxCatchAll,Respons_x00e1_vel,Author')
-            .select('*,Id,Title,C_x00f3_digo,Abrang_x00ea_ncia/Name,AbrangenciaLocal,Respons_x00e1_vel/Title,Author/Title,Tipo,Etapa,MicroEtapa,TaxCatchAll/ID,TaxCatchAll/Term')
-            .filter(`Id eq '${props.idNormativo}'`)()
+
+        GetItems(sp, List.Normativos.Title, List.Normativos.Expand, List.Normativos.Select, `Id eq '${props.idNormativo}'`)
             .then((data: INormativos[]) => {
-                setNormativo(data)
-                console.log(data[0])
+                setNormativo(data);
+                console.log(data);
             });
 
-        sp.web.lists.getByTitle('CurtidasColaboracao').items.expand('ColaboracaoCooperativa,ColaboracaoCentral')
-            .select('*,Id,ColaboracaoCooperativa/Title,ColaboracaoCooperativa/Id,ColaboracaoCentral/Title,ColaboracaoCentral/Id')
-            //.filter(`Id eq '${props.idNormativo}'`)
-            ()
-            .then((data) => {
-                console.log('Curtidas', data)
-            });
+        console.log('values', valueProps);
 
-        sp.web.lists.getByTitle('ColaboracaoCooperativas').items.expand('Author,NormativoRelacionado,Revisor')
-            .select('*,Created,Author/Title,Author/EMail,Revisor/EMail,Revisor/Title,NormativoRelacionado/Title')
-            ()
-            .then((data) => {
-                console.log('Coop', data[0])
-            });
-
-        sp.web.lists.getByTitle('ColaboracaoCentrais').items.expand('Author,NormativoRelacionado,Revisor,Colaboracoes')
-            .select('*,Colaboracoes/Title,Colaboracoes/Id,Created,Author/Title,Author/EMail,Revisor/EMail,Revisor/Title,NormativoRelacionado/Title')
-            ()
-            .then((data) => {
-                console.log('Central', data);
-            });
-
-        sp.web.lists.getByTitle('AnexoColaboracao').items.expand('ColaboracaoCentral,ColaboracaoCooperativa')
-            .select('*,ColaboracaoCentral/Title,ColaboracaoCentral/Id,ColaboracaoCooperativa/Title,ColaboracaoCooperativa/Id')
-            ()
-            .then((data) => {
-                console.log('Anexo', data[0]);
-            });
-
-        sp.web.siteUsers
-            .getByLoginName('i:0#.f|membership|gustavo_delfino@sicredihomologacao.com.br')
-            .select('Id,name').get()
-            .then(user => {
-                sp.web.siteUsers.getById(user.Id).groups.get()
-                    .then(groups => {
-                        groups.forEach(group => console.log('Grupos', group.Title))
-                    });
-            })
-        //.then(console.log)
     }, []);
 
 
@@ -306,7 +277,7 @@ export default function ColabHeader(props: IColabHeaderProps): JSX.Element {
                         <div className={customStyle['col-md-12']}>
                             <div className={customStyle['select-wrapper']}>
                                 <div className={customStyle['form-outline']}>
-                                    <input className={`${customStyle['form-control']} ${customStyle['select-input']} ${customStyle['active']}`} type="text" />
+                                    <input className={`${customStyle['form-control']} ${customStyle['select-input']} ${customStyle['active']}`} type="text" id="title" />
                                     <label className={`${customStyle['form-label']} ${customStyle['select-label']} ${customStyle['active']}`}>Título</label>
                                     <div className={customStyle['form-notch']}>
                                         <div className={customStyle['form-notch-leading']} style={{ width: "9px" }}></div>
@@ -322,7 +293,7 @@ export default function ColabHeader(props: IColabHeaderProps): JSX.Element {
                         <div className={customStyle['col-md-12']}>
                             <div className={customStyle['select-wrapper']}>
                                 <div className={customStyle['form-outline']}>
-                                    <textarea name="answer" rows={10} cols={20} className={`${customStyle['form-control']} ${customStyle['select-input']} ${customStyle['active']}`} id='answer' />
+                                    <textarea name="comment" rows={10} cols={20} className={`${customStyle['form-control']} ${customStyle['select-input']} ${customStyle['active']}`} id="comment" />
                                     <label className={`${customStyle['form-label']} ${customStyle['select-label']} ${customStyle['active']}`}>Colaboração</label>
                                     <div className={customStyle['form-notch']}>
                                         <div className={customStyle['form-notch-leading']} style={{ width: "9px" }}></div>
@@ -337,7 +308,7 @@ export default function ColabHeader(props: IColabHeaderProps): JSX.Element {
                     <div className={customStyle.row}>
                         <div className={`${customStyle['col-md-12']} ${customStyle['modal-btn']}`}>
                             <button onClick={closeModal} className={`${customStyle.btn} ${customStyle['btn-danger']}`} style={{ marginRight: '10px' }}>Cancelar</button>
-                            <button className={`${customStyle['btn']} ${customStyle['btn-success']}`}>Salvar</button>
+                            <button className={`${customStyle['btn']} ${customStyle['btn-success']}`} onClick={saveCommet}>Salvar</button>
                         </div>
                     </div>
                 </div>

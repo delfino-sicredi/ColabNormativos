@@ -140,3 +140,46 @@ export interface IColabCentral {
     }
   }
 }
+
+export interface IAttach {
+  FileRef: string;
+  FileLeafRef: string;
+  LinkFilename: string;
+  ColaboracaoCentralTitle: string;
+  ColaboracaoCentralId: string;
+  ColaboracaoCooperativaTitle: string;
+  ColaboracaoCooperativaId: string;
+}
+
+export const List = {
+  Central: 'Central',
+  Cooperativas: 'Cooperativa',
+  ColabCentrais: {
+    Title: 'ColaboracaoCentrais',
+    Expand: 'Author,NormativoRelacionado,Revisor,Colaboracoes',
+    Select: '*,Colaboracoes/Title,Colaboracoes/Id,Created,Author/Title,Author/EMail,Revisor/EMail,Revisor/Title,NormativoRelacionado/Title'
+  },
+
+  ColabCoop: {
+    Title: 'ColaboracaoCooperativas',
+    Expand: 'Author,NormativoRelacionado,Revisor',
+    Select: '*,Created,Author/Title,Author/EMail,Revisor/EMail,Revisor/Title,NormativoRelacionado/Title'
+  },
+  ColacCurtidas: {
+    Title: 'CurtidasColaboracao',
+    Expand: 'ColaboracaoCooperativa,ColaboracaoCentral',
+    Select: '*,Id,ColaboracaoCooperativa/Title,ColaboracaoCooperativa/Id,ColaboracaoCentral/Title,ColaboracaoCentral/Id'
+  },
+  Normativos: {
+    Title: 'Normativos',
+    Expand: 'TaxCatchAll,Respons_x00e1_vel,Author',
+    Select: '*,Id,Title,C_x00f3_digo,Abrang_x00ea_ncia/Name,AbrangenciaLocal,Respons_x00e1_vel/Title,Author/Title,Tipo,Etapa,MicroEtapa,TaxCatchAll/ID,TaxCatchAll/Term'
+  },
+  Attach: {
+    Title: 'AnexoColaboracao',
+    Expand: 'ColaboracaoCentral,ColaboracaoCooperativa',
+    Select: '*,FileRef,FileLeafRef,LinkFilename,ColaboracaoCentral/Title,ColaboracaoCentral/Id,ColaboracaoCooperativa/Title,ColaboracaoCooperativa/Id'
+  }
+}
+
+export const webUrl = window.location.protocol + "//" + window.location.hostname + "/" + window.location.pathname.split('/')[1] + "/" + window.location.pathname.split('/')[2];
